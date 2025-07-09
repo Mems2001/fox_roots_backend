@@ -14,7 +14,8 @@
     "emitDecoratorMetadata": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "commonjs",
+    "esModuleInterop": true
   },
   "files": [],
   "references": [

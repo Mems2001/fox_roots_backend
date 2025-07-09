@@ -1,7 +1,8 @@
 import { Application, Request, Response } from "express";
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import { Error } from "sequelize";
+const express = require('express')
+const dotenv = require('dotenv');
+const cors = require('cors');
 
 //API SETTINGS
 dotenv.config();
@@ -21,6 +22,16 @@ app.get('/', (req: Request, res: Response) => {
     maintenance: false
   })
 })
+
+//  Database connection
+const db = require("../utils/database.js");
+
+db.authenticate()
+    .then(() => console.log("Database correctly authenticated"))
+    .catch((err:Error) => console.log(err))
+db.sync()
+    .then(() => console.log("Database correctly sincronized"))
+    .catch((err:Error) => console.log(err))
 
 app.listen(port, () => {
         console.log(`Server on PORT: ${port}`)})

@@ -6,7 +6,12 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev ./src/app.ts",
-    "nodemon": "nodemon --exec ts-node ./src/app.ts"
+    "nodemon": "nodemon --exec ts-node ./src/app.ts",
+    "u_mig_all": "sequelize-cli db:migrate:undo:all",
+    "mig_all": "sequelize-cli db:migrate",
+    "seeds_all": "sequelize-cli db:seed:all",
+    "db_reset": "npm run u_mig_all && npm run mig_all && npm run seeds_all",
+    "deploy": "npm install && npm run db_reset"
   },
   "author": "mems2001",
   "license": "ISC",
