@@ -17,13 +17,19 @@ module.exports = {
         },
         createdAt: {
           allowNull: false,
-          type: Sequelize.DATE
+          type: Sequelize.DATE,
+          field: 'created_at',
+          defaultValue: new Date()
         },
         updatedAt: {
           allowNull: false,
-          type: Sequelize.DATE
+          type: Sequelize.DATE,
+          field: 'updated_at',
+          defaultValue: new Date()
         }
       }, {transaction});
+
+      await transaction.commit()
     } catch (error) {
       await transaction.rollback();
 

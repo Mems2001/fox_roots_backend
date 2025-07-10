@@ -3,6 +3,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+const ProductsRouter = require('./Router/products.router.js')
+
 //API SETTINGS
 dotenv.config();
 const app = express();
@@ -22,6 +24,8 @@ app.get('/', (req, res) => {
     maintenance: false
   })
 })
+
+app.use('/api/v1/products', ProductsRouter)
 
 //  Database connection
 const db = require("../utils/database.js");
