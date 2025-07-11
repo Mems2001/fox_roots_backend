@@ -5,7 +5,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.createTable('products', {
+      await queryInterface.createTable('styles', {
         id: {
           allowNull: false,
           unique: true,
@@ -13,12 +13,17 @@ module.exports = {
           type: Sequelize.UUID
         },
         name: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.STRING
         },
-        description: {
+        imageData: {
           type: Sequelize.TEXT,
-          allowNull: false
+          allowNull: false,
+          field: 'image_data'
+        },
+        price: {
+          type: Sequelize.DOUBLE,
+          allowNull: false,
+          defaultValue: 0
         },
         createdAt: {
           allowNull: false,
@@ -45,7 +50,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.dropTable('products', {transaction});
+      await queryInterface.dropTable('styles', {transaction});
 
       await transaction.commit()
     } catch (error) {

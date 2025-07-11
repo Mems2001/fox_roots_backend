@@ -5,7 +5,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.createTable('products', {
+      await queryInterface.createTable('colors', {
         id: {
           allowNull: false,
           unique: true,
@@ -16,15 +16,15 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
         },
-        description: {
-          type: Sequelize.TEXT,
+        code: {
+          type: Sequelize.STRING,
           allowNull: false
         },
         createdAt: {
-          allowNull: false,
-          type: Sequelize.DATE,
-          field: 'created_at',
-          defaultValue: new Date()
+            allowNull: false,
+            type: Sequelize.DATE,
+            field: 'created_at',
+            defaultValue: new Date()
         },
         updatedAt: {
           allowNull: false,
@@ -45,7 +45,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.dropTable('products', {transaction});
+      await queryInterface.dropTable('colors', {transaction});
 
       await transaction.commit()
     } catch (error) {

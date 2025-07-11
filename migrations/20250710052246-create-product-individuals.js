@@ -5,19 +5,35 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.createTable('products', {
+      await queryInterface.createTable('product_individuals', {
         id: {
           allowNull: false,
           unique: true,
           primaryKey: true,
           type: Sequelize.UUID
         },
-        name: {
-          type: Sequelize.STRING,
-          allowNull: false
+        productId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'product_id'
         },
-        description: {
-          type: Sequelize.TEXT,
+        colorId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'color_id'
+        },
+        sizeId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'size_id'
+        },
+        styleId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'style_id'
+        },
+        price: {
+          type: Sequelize.DOUBLE,
           allowNull: false
         },
         createdAt: {
@@ -35,7 +51,7 @@ module.exports = {
       }, {transaction});
 
       await transaction.commit()
-    } catch (error) {
+    } catch(error) {
       await transaction.rollback();
 
       throw error
@@ -45,7 +61,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
 
     try {
-      await queryInterface.dropTable('products', {transaction});
+      await queryInterface.dropTable('product_individuals', {transaction});
 
       await transaction.commit()
     } catch (error) {

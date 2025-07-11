@@ -1,0 +1,95 @@
+'use strict';
+const uuid = require('uuid');
+const models = require('../models');
+const { Op } = require('sequelize');
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up (queryInterface, Sequelize) {
+    /**
+     * Add seed commands here.
+     *
+     * Example:
+     * await queryInterface.bulkInsert('People', [{
+     *   name: 'John Doe',
+     *   isBetaMember: false
+     * }], {});
+    */
+
+    const products = await models.Products.findAll();
+    const colors = await models.Colors.findAll();
+    const sizes = await models.Sizes.findAll();
+    const styles = await models.Styles.findAll();
+
+    function getElementId (table, name) {
+      for (let e of table) {
+        if (e.name === name) {
+          return e.id
+        }
+      }
+    }
+
+    const individuals = [
+      {
+        id: uuid.v4(),
+        product_id: getElementId(products, 'camiseta'),
+        color_id: getElementId(colors, 'white'),
+        size_id: getElementId(sizes, 'S'),
+        style_id: getElementId(styles, 'plain'),
+        price: 10
+      },
+      {
+        id: uuid.v4(),
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'white'),
+        size_id: getElementId(sizes, 'L'),
+        style_id: getElementId(styles, 'plain'),
+        price: 100
+      },
+      {
+        id: uuid.v4(),
+        product_id: getElementId(products, 'camiseta'),
+        color_id: getElementId(colors, 'black'),
+        size_id: getElementId(sizes, 'M'),
+        style_id: getElementId(styles, 'plain'),
+        price: 1000
+      },
+    ];
+
+    const transaction = await queryInterface.sequelize.transaction();
+
+    try {
+      await queryInterface.bulkInsert('product_individuals', individuals, {transaction});
+
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback();
+
+      throw error
+    }
+  },
+
+  async down (queryInterface, Sequelize) {
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
+    const transaction = await queryInterface.sequelize.transaction();
+
+    try {
+      await queryInterface.bulkDelete('product_individuals', {
+        id: {
+          [Op.ne]: ''
+        }
+      }, {transaction});
+
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback();
+
+      throw error
+    }
+  }
+};
