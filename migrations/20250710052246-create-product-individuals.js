@@ -15,7 +15,11 @@ module.exports = {
         productId: {
           type: Sequelize.UUID,
           allowNull: false,
-          field: 'product_id'
+          field: 'product_id',
+          references: {
+            model: 'products',
+            key: 'id'
+          }
         },
         colorId: {
           type: Sequelize.UUID,
