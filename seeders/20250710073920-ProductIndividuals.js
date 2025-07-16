@@ -82,8 +82,8 @@ module.exports = {
       },
       {
         id: uuid.v4(),
-        name: 'test 4',
-        description: 'test 4',
+        name: 'test 6',
+        description: 'test 6',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'L'),
