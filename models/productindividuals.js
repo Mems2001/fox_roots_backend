@@ -30,6 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ProductIndividuals.init({
+    name: DataTypes.STRING,
+    description: DataTypes.STRING,
     product_id: DataTypes.UUID,
     color_id: DataTypes.UUID,
     size_id: DataTypes.UUID,

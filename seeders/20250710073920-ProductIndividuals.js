@@ -32,6 +32,8 @@ module.exports = {
     const individuals = [
       {
         id: uuid.v4(),
+        name: 'test 1',
+        description: 'test 1',
         product_id: getElementId(products, 'camiseta'),
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
@@ -40,6 +42,8 @@ module.exports = {
       },
       {
         id: uuid.v4(),
+        name: 'test 2',
+        description: 'test 2',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'L'),
@@ -48,11 +52,23 @@ module.exports = {
       },
       {
         id: uuid.v4(),
+        name: 'test 3',
+        description: 'test 3',
         product_id: getElementId(products, 'camiseta'),
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'M'),
         style_id: getElementId(styles, 'plain'),
         price: 1000
+      },
+      {
+        id: uuid.v4(),
+        name: 'test 4',
+        description: 'test 4',
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'black'),
+        size_id: getElementId(sizes, 'M'),
+        style_id: getElementId(styles, 'plain'),
+        price: 50
       },
     ];
 

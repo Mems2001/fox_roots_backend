@@ -12,6 +12,15 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.UUID
         },
+        name: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true
+        },
+        description: {
+          type: Sequelize.TEXT,
+          allowNull: false
+        },
         productId: {
           type: Sequelize.UUID,
           allowNull: false,
