@@ -70,6 +70,26 @@ module.exports = {
         style_id: getElementId(styles, 'plain'),
         price: 50
       },
+      {
+        id: uuid.v4(),
+        name: 'test 5',
+        description: 'test 5',
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'white'),
+        size_id: getElementId(sizes, 'S'),
+        style_id: getElementId(styles, 'plain'),
+        price: 500
+      },
+      {
+        id: uuid.v4(),
+        name: 'test 4',
+        description: 'test 4',
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'black'),
+        size_id: getElementId(sizes, 'L'),
+        style_id: getElementId(styles, 'plain'),
+        price: 350
+      },
     ];
 
     const transaction = await queryInterface.sequelize.transaction();
