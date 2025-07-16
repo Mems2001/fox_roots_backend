@@ -4,4 +4,7 @@ const ProductIndividualsControllers = require('../Controllers/productIndividuals
 router.route('/')
     .get(ProductIndividualsControllers.getAllProductIndividuals)
 
+router.route('/:prod_ind_id')
+    .get(ProductIndividualsControllers.getProductIndividualById)
+
 module.exports = router

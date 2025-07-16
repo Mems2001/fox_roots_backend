@@ -23,6 +23,33 @@ async function findAllProductIndividuals () {
     })
 }
 
+async function findProductIndividualById (id) {
+    return await models.ProductIndividuals.findOne({
+        where: {
+            id
+        },
+        include: [
+            {
+                model: models.Products,
+                as: 'Product'
+            },
+            {
+                model: models.Colors,
+                as: 'Color'
+            },
+            {
+                model: models.Sizes,
+                as: 'Size'
+            }, 
+            {
+                model: models.Styles,
+                as: 'Style'
+            }
+        ]
+    })
+}
+
 module.exports = {
-    findAllProductIndividuals
+    findAllProductIndividuals,
+    findProductIndividualById
 }

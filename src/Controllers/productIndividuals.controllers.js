@@ -13,6 +13,20 @@ function getAllProductIndividuals (req, res) {
         })
 }
 
+function getProductIndividualById (req, res) {
+    ProductIndividualsServices.findProductIndividualById(req.params.prod_ind_id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(400).json({
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
-    getAllProductIndividuals
+    getAllProductIndividuals,
+    getProductIndividualById
 }
