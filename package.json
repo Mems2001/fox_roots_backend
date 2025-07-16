@@ -2,7 +2,7 @@
   "name": "foox-roots-backend",
   "version": "1.0.0",
   "description": "backcend app and db connection for foox-roots-ec",
-  "main": "app.ts",
+  "main": "app.js",
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js",
