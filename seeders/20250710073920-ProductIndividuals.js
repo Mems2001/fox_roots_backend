@@ -38,6 +38,7 @@ module.exports = {
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
         style_id: getElementId(styles, 'plain'),
+        stock: 5,
         price: 10
       },
       {
@@ -48,6 +49,7 @@ module.exports = {
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'L'),
         style_id: getElementId(styles, 'plain'),
+        stock: 3,
         price: 100
       },
       {
@@ -58,6 +60,7 @@ module.exports = {
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'M'),
         style_id: getElementId(styles, 'plain'),
+        stock: 5,
         price: 1000
       },
       {
@@ -68,6 +71,7 @@ module.exports = {
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'M'),
         style_id: getElementId(styles, 'plain'),
+        stock: 2,
         price: 50
       },
       {
@@ -78,6 +82,7 @@ module.exports = {
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
         style_id: getElementId(styles, 'plain'),
+        stock: 1,
         price: 500
       },
       {
@@ -88,6 +93,7 @@ module.exports = {
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'L'),
         style_id: getElementId(styles, 'plain'),
+        stock: 4,
         price: 350
       },
     ];

@@ -45,6 +45,11 @@ module.exports = {
           allowNull: false,
           field: 'style_id'
         },
+        stock: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          defaultValue: 0
+        },
         price: {
           type: Sequelize.DOUBLE,
           allowNull: false
