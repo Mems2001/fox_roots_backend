@@ -33,7 +33,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 1',
-        description: 'test 1',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'camiseta'),
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
@@ -43,7 +43,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 2',
-        description: 'test 2',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'L'),
@@ -53,7 +53,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 3',
-        description: 'test 3',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'camiseta'),
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'M'),
@@ -63,7 +63,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 4',
-        description: 'test 4',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'M'),
@@ -73,7 +73,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 5',
-        description: 'test 5',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
@@ -83,7 +83,7 @@ module.exports = {
       {
         id: uuid.v4(),
         name: 'test 6',
-        description: 'test 6',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
         product_id: getElementId(products, 'buso'),
         color_id: getElementId(colors, 'black'),
         size_id: getElementId(sizes, 'L'),
