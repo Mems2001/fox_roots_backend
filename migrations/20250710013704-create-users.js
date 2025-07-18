@@ -15,6 +15,7 @@ module.exports = {
         username: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true,
           validate: {
             min: 3
           }
@@ -22,20 +23,19 @@ module.exports = {
         email: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true,
           validate: {
             isEmail: true
           }
         },
         phone: {
           type: Sequelize.STRING,
-          allowNull: true
+          allowNull: true,
+          unique: true
         },
         password: {
           type: Sequelize.STRING,
-          allowNull: false,
-          validate: {
-            min: 4
-          }
+          allowNull: false
         },
         emailVerified: {
           type: Sequelize.BOOLEAN,
