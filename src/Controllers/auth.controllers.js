@@ -72,7 +72,8 @@ async function login (req, res) {
     } catch (error) {
         console.error(error)
         return res.status(500).json({
-            message: 'Something went wrong, talk to any administrator'
+            message: 'Something went wrong, talk to any administrator',
+            error
         })
     }
 }
@@ -125,7 +126,8 @@ async function authSession(req, res) {
         res.delCookie('access-token')
         res.status(400).json({
             session_authenticated: false,
-            message: 'Error, not logged in'
+            message: 'Error, not logged in',
+            error
         })
     }
 }
