@@ -7,7 +7,7 @@ async function createUser({username, email, phone, password}) {
         id: uuid.v4(),
         username,
         email,
-        phone,
+        phone: phone? phone : undefined,
         password: hashPassword(password)
     }
 
