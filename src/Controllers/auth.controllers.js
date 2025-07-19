@@ -1,4 +1,6 @@
+const { verify } = require('jsonwebtoken');
 const { comparePasswords } = require('../../utils/bcrypt');
+const { generateJWT } = require('../../utils/generate-jwt');
 const AuthServices = require('../Services/users.services');
 const UsersServices = require('../Services/users.services');
 
@@ -59,6 +61,11 @@ async function login (req, res) {
             })
         }
 
+        //JWT generation
+        const accesToken = await generateJWT(user.id , '1d');
+        // const refreshToken = await generateJWT(user.id , user.role_id , '7 d');
+        res.setCookie('access-token', accesToken)
+        // res.cookie('refresh-token' , refreshToken)
         res.status(200).json({
             message: `User ${user.username} logged in`
         })
@@ -70,7 +77,61 @@ async function login (req, res) {
     }
 }
 
+async function authSession(req, res) {
+    console.log('cookies for authentication:', req.cookies)
+    const cookie = req.cookies['access-token']
+
+    try {
+        if (cookie) {
+            const data = verify(cookie , process.env.JWT_SECRET)
+            console.log(data);
+            if (!data) {
+                req.session.user = null
+                res.status(401).json({
+                    session_authenticated: false,
+                    message: 'Session expired'
+                })
+            }
+
+            const user = await UsersServices.getUserById(data.user_id)
+
+            if (user) {
+                req.session.user = user
+                console.log(user.username, ' authenticated')
+                res.status(200).json({
+                    session_authenticated: true,
+                    message: "Session authenticated",
+                    user_id: user.id,
+                })
+            } else {
+                req.session.user = null
+                res.delCookie('access-token')
+                res.status(404).json({
+                    session_authenticated: false,
+                    message: "User doesn't exist"
+                })
+            }
+        } else {
+            req.session.user = null
+            res.delCookie('access-token')
+            res.status(406).json({
+                session_authenticated: false,
+                message: 'Cookie not found'
+            })
+        }
+    } catch (error) {
+        console.error(error)
+        req.session.user = null
+        res.delCookie('access-token')
+        res.status(400).json({
+            session_authenticated: false,
+            message: 'Error, not logged in'
+        })
+    }
+}
+
 module.exports = {
     postUser,
-    login
+    login,
+    authSession
 }

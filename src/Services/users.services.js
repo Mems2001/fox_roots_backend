@@ -47,9 +47,16 @@ async function getUserByPhone (phone) {
     })
 }
 
+async function getUserById(id) {
+    return await models.Users.findOne({
+        id
+    })
+}
+
 module.exports = {
     createUser,
     getUserByUsername,
     getUserByEmail,
-    getUserByPhone
+    getUserByPhone,
+    getUserById
 }
