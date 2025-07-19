@@ -38,7 +38,7 @@ async function login (req, res) {
         if (withEmail) {
             user = await UsersServices.getUserByEmail(email)
             if (!user) {
-                res.status(404).json({
+                return res.status(404).json({
                     message: 'User with this email was not found'
                 })
             }
@@ -47,7 +47,7 @@ async function login (req, res) {
         if (withPhone) {
             user = await UsersServices.getUserByPhone(phone)
             if (!user) {
-                res.status(404).json({
+                return res.status(404).json({
                     message: 'User with this phone was not found'
                 })
             }
