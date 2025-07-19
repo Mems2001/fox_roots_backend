@@ -34,7 +34,7 @@ app.use((req, res, next) => {
       secure: process.env.NODE_ENV === 'production', // Solo en producción
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Configuración para CORS
       maxAge: 1000 * 60 * 60 * 24, // 1 día por defecto
-      domain: process.env.NODE_ENV === 'production' ? 'fox-roots-backend-exq8.com' : undefined,
+      // domain: process.env.NODE_ENV === 'production' ? 'fox-roots-backend-exq8.com' : undefined,
       path: '/'
     };
     const finalOptions = { ...defaultOptions, ...options }
