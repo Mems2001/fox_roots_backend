@@ -6,6 +6,7 @@ const cookie_parser = require('cookie-parser');
 const session = require('express-session');
 
 const AuthRouter = require('./Router/auth.router.js');
+const UsersRouter = require('./Router/users.router.js');
 const ProductsRouter = require('./Router/products.router.js');
 const ProductIndividualsRouter = require('./Router/productIndividuals.router.js');
 
@@ -70,6 +71,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/auth', AuthRouter)
+app.use('/api/v1/users', UsersRouter)
 app.use('/api/v1/products', ProductsRouter)
 app.use('/api/v1/individuals', ProductIndividualsRouter)
 

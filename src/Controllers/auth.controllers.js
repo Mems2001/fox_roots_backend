@@ -97,7 +97,7 @@ async function authSession(req, res) {
             const user = await UsersServices.getUserById(data.user_id)
 
             if (user) {
-                req.session.user = user
+                req.session.user = data
                 console.log(user.username, ' authenticated')
                 res.status(200).json({
                     session_authenticated: true,

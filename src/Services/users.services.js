@@ -49,7 +49,9 @@ async function getUserByPhone (phone) {
 
 async function getUserById(id) {
     return await models.Users.findOne({
-        id
+        where: {
+            id
+        }
     })
 }
 
