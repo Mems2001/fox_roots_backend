@@ -2,7 +2,8 @@ const UsersServices = require('../Services/users.services');
 
 function getMyUser(req, res) {
     const user_id = req.session.user.user_id
-    console.log('---> user_id from users controllers')
+    const cookies = req.cookies
+    console.log('---> user_id from users controllers', user_id)
 
     UsersServices.getUserById(user_id)
         .then(data => {
