@@ -1,13 +1,16 @@
 const uuid = require('uuid');
 const models = require('../../models');
 const { hashPassword } = require('../../utils/bcrypt');
+const { sendTestEmail, sendEmail } = require('../../utils/mailer');
 
 async function createUser({username, email, phone, password}) {
     const userData = {
         id: uuid.v4(),
         username,
         email,
+        email_verification_token: uuid.v4(),
         phone: phone? phone : undefined,
+        phone_verification_token: uuid.v4(),
         password: hashPassword(password)
     }
 
@@ -55,6 +58,14 @@ async function findUserById(id) {
     })
 }
 
+async function findUserByEmailToken(email_verification_token) {
+    return await models.Users.findOne({
+        where: {
+            email_verification_token
+        }
+    })
+}
+
 async function updateUserById(id, {username, email, phone}) {
     const transaction = await models.sequelize.transaction()
     try {
@@ -68,10 +79,22 @@ async function updateUserById(id, {username, email, phone}) {
             return null
         }
 
+        //We check if email or phone are going to change, if so, we generate new verification tokens
+        let newEmailToken = user.email_verification_token
+        let newPhoneToken = user.phone_verification_token
+        if(user.email !== email) {
+            newEmailToken = uuid.v4()
+        }
+        if(user.phone !== phone) {
+            newPhoneToken = uuid.v4()
+        }
+
         const updatedUser = await user.update({
             username: username? username : user.username,
             email: email? email : user.email,
-            phone: phone? phone : user.phone
+            email_verification_token: newEmailToken,
+            phone: phone? phone : user.phone,
+            phone_verification_token: newPhoneToken
         }, {transaction})
 
         await transaction.commit()
@@ -90,5 +113,6 @@ module.exports = {
     findUserByEmail,
     findUserByPhone,
     findUserById,
+    findUserByEmailToken,
     updateUserById
 }

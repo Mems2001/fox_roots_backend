@@ -1,6 +1,13 @@
 const router = require('express').Router();
 
-const AuthControllers = require('../Controllers/auth.controllers')
+const { authenticateSessionMiddleware } = require('../Middlewares/session.middleware');
+const AuthControllers = require('../Controllers/auth.controllers');
+
+router.route('/verify-email/:token')
+    .get(AuthControllers.getVerifyEmail)
+
+router.route('/verify-email')
+    .get(authenticateSessionMiddleware, AuthControllers.sendEmailVerificationToken)
 
 router.route('/register')
     .post(AuthControllers.postUser)

@@ -1,7 +1,7 @@
 const { verify } = require('jsonwebtoken');
 const { comparePasswords } = require('../../utils/bcrypt');
 const { generateJWT } = require('../../utils/generate-jwt');
-const AuthServices = require('../Services/users.services');
+const AuthServices = require('../Services/auth.services');
 const UsersServices = require('../Services/users.services');
 
 async function postUser (req, res) {
@@ -147,9 +147,47 @@ async function authSession(req, res) {
     }
 }
 
+function sendEmailVerificationToken (req, res) {
+    const user_id = req.session.user.user_id
+    console.log('---> Sending email verification token for user:', user_id)
+
+    AuthServices.sendEmailVerificationToken(user_id)
+        .then(data => {
+            if (data) res.status(200).json(data)
+            else res.status(400).json(data)
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                message: 'Error sending email verification token',
+                err
+            })
+        })
+}
+
+function getVerifyEmail(req, res) {
+    const token = req.params.token
+
+    AuthServices.verifyEmail(token)
+        .then(data => {
+            if (data) res.status(200).json(data)
+            else res.status(400).json(data)
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                location: 'auth controllers',
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
-    postUser,
     login,
     logout,
-    authSession
+    postUser,
+    authSession,
+    getVerifyEmail,
+    sendEmailVerificationToken
 }
