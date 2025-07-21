@@ -19,8 +19,10 @@ async function sendEmailVerificationToken(id) {
 async function verifyEmail(token) {
     const user = await UsersServices.findUserByEmailToken(token)
     const transaction = await models.sequelize.transaction()
+    console.log('---> Verifying email for:', user.email, 'with token:', token)
     
     if (!user) {
+        console.error('User nor found for token:', token)
         return false
     }
 
