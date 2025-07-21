@@ -17,7 +17,7 @@ async function postUser (req, res) {
         })
     }
 
-    AuthServices.createUser(req.body)
+    UsersServices.createUser(req.body)
         .then(data => {
             res.status(201).json(data)
         })
