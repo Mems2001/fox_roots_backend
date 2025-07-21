@@ -44,7 +44,7 @@ async function sendEmail(receiverEmail, token){
     to: receiverEmail,                 
     subject: 'Email verification token',  
     text: 'This is the plain text body',        
-    html: `<b>This your link for email verification:</b> <a href='http://localhost:8000/api/v1/auth/verify-email/${token}'>Verify</a>`,      
+    html: `<b>This your link for email verification:</b> <a href='https://fox-roots-backend-exq8.onrender.com/api/v1/auth/verify-email/${token}'>Verify</a>`,      
   });
 
   console.log('Message sent:', info.messageId);
