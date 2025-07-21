@@ -82,18 +82,24 @@ async function updateUserById(id, {username, email, phone}) {
         //We check if email or phone are going to change, if so, we generate new verification tokens
         let newEmailToken = user.email_verification_token
         let newPhoneToken = user.phone_verification_token
+        let newEmailVerified = user.email_verified
+        let newPhoneVerified = user.phone_verified
         if(user.email !== email) {
+            newEmailVerified = false
             newEmailToken = uuid.v4()
         }
         if(user.phone !== phone) {
+            newPhoneVerified = false
             newPhoneToken = uuid.v4()
         }
 
         const updatedUser = await user.update({
             username: username? username : user.username,
             email: email? email : user.email,
+            email_verified: newEmailVerified,
             email_verification_token: newEmailToken,
             phone: phone? phone : user.phone,
+            phone_verified: newPhoneVerified,
             phone_verification_token: newPhoneToken
         }, {transaction})
 
