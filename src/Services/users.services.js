@@ -23,7 +23,7 @@ async function createUser({username, email, phone, password}) {
     }
 }
 
-async function getUserByUsername (username) {
+async function findUserByUsername (username) {
     return await models.Users.findOne({
         where: {
             username
@@ -31,7 +31,7 @@ async function getUserByUsername (username) {
     })
 }
 
-async function getUserByEmail (email) {
+async function findUserByEmail (email) {
     return await models.Users.findOne({
         where: {
             email
@@ -39,7 +39,7 @@ async function getUserByEmail (email) {
     })
 }
 
-async function getUserByPhone (phone) {
+async function findUserByPhone (phone) {
     return await models.Users.findOne({
         where: {
             phone
@@ -47,7 +47,7 @@ async function getUserByPhone (phone) {
     })
 }
 
-async function getUserById(id) {
+async function findUserById(id) {
     return await models.Users.findOne({
         where: {
             id
@@ -55,10 +55,40 @@ async function getUserById(id) {
     })
 }
 
+async function updateUserById(id, {username, email, phone}) {
+    const transaction = await models.sequelize.transaction()
+    try {
+        const user = await models.Users.findOne({
+            where: {
+                id
+            }
+        })
+
+        if (!user) {
+            return null
+        }
+
+        const updatedUser = await user.update({
+            username: username? username : user.username,
+            email: email? email : user.email,
+            phone: phone? phone : user.phone
+        }, {transaction})
+
+        await transaction.commit()
+    
+        return updatedUser
+    } catch (error) {
+        await transaction.rollback()
+        console.error('users services:', error)
+        return null
+    }
+}
+
 module.exports = {
     createUser,
-    getUserByUsername,
-    getUserByEmail,
-    getUserByPhone,
-    getUserById
+    findUserByUsername,
+    findUserByEmail,
+    findUserByPhone,
+    findUserById,
+    updateUserById
 }

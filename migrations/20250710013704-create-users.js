@@ -31,7 +31,8 @@ module.exports = {
         phone: {
           type: Sequelize.STRING,
           allowNull: true,
-          unique: true
+          unique: true,
+          defaultValue: undefined
         },
         password: {
           type: Sequelize.STRING,
@@ -48,6 +49,11 @@ module.exports = {
           allowNull: false,
           defaultValue: false,
           field: 'phone_verified'
+        },
+        profileImage: {
+          type: Sequelize.STRING,
+          allowNull: true,
+          field: 'profile_image'
         },
         createdAt: {
             allowNull: false,

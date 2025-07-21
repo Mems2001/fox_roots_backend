@@ -8,6 +8,9 @@ router.route('/register')
 router.route('/login')
     .post(AuthControllers.login)
 
+router.route('/logout')
+    .get(AuthControllers.logout)
+
 router.route('/')
     .get(AuthControllers.authSession)
 

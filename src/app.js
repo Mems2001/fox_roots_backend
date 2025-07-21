@@ -47,7 +47,7 @@ app.use((req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      domain: process.env.NODE_ENV === 'production' ? 'fox-roots-backend-exq8.com' : undefined,
+      // domain: process.env.NODE_ENV === 'production' ? 'fox-roots-backend-exq8.com' : undefined,
       path:  '/'
     };
     const finalOptions = { ...defaultOptions, ...options }

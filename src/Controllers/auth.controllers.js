@@ -9,7 +9,7 @@ async function postUser (req, res) {
 
     let user
 
-    user = await UsersServices.getUserByUsername(username)
+    user = await UsersServices.findUserByUsername(username)
 
     if (user) {
         return res.status(409).json({
@@ -36,7 +36,7 @@ async function login (req, res) {
         let user
         //First we validate the login method.
         if (withEmail) {
-            user = await UsersServices.getUserByEmail(email)
+            user = await UsersServices.findUserByEmail(email)
             if (!user) {
                 return res.status(404).json({
                     message: 'User with this email was not found'
@@ -45,7 +45,7 @@ async function login (req, res) {
         }
 
         if (withPhone) {
-            user = await UsersServices.getUserByPhone(phone)
+            user = await UsersServices.findUserByPhone(phone)
             if (!user) {
                 return res.status(404).json({
                     message: 'User with this phone was not found'
@@ -78,6 +78,21 @@ async function login (req, res) {
     }
 }
 
+function logout(req, res) {
+    console.log('logging out')
+
+    try {
+        req.session.user = null
+        res.delCookie('access-token')
+        res.status(200).json({
+            session_authenticated: false,
+            message: "User logged out"
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 async function authSession(req, res) {
     console.log('cookies for authentication:', req.cookies)
     const cookie = req.cookies['access-token']
@@ -94,7 +109,7 @@ async function authSession(req, res) {
                 })
             }
 
-            const user = await UsersServices.getUserById(data.user_id)
+            const user = await UsersServices.findUserById(data.user_id)
 
             if (user) {
                 req.session.user = data
@@ -135,5 +150,6 @@ async function authSession(req, res) {
 module.exports = {
     postUser,
     login,
+    logout,
     authSession
 }
