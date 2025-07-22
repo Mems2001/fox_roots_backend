@@ -113,6 +113,28 @@ async function updateUserById(id, {username, email, phone}) {
     }
 }
 
+async function destroyUserById(id) {
+    const transaction = await models.sequelize.transaction()
+
+    try {
+        const user = await findUserById(id)
+
+        if (!user) {
+            return null
+        }
+
+        await user.destroy({transaction})
+
+        await transaction.commit()
+
+        return true
+    } catch(error) {
+        console.error(error)
+        await transaction.rollback()
+        throw error
+    }
+}
+
 module.exports = {
     createUser,
     findUserByUsername,
@@ -120,5 +142,6 @@ module.exports = {
     findUserByPhone,
     findUserById,
     findUserByEmailToken,
-    updateUserById
+    updateUserById,
+    destroyUserById
 }

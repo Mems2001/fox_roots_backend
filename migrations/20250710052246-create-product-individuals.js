@@ -54,6 +54,11 @@ module.exports = {
           type: Sequelize.DOUBLE,
           allowNull: false
         },
+        rating: {
+          type: Sequelize.DOUBLE,
+          allowNull: false,
+          defaultValue: 0
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

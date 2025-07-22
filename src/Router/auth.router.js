@@ -12,11 +12,14 @@ router.route('/verify-email')
 router.route('/register')
     .post(AuthControllers.postUser)
 
+router.route('/logout')
+    .get(AuthControllers.logout)
+
 router.route('/login')
     .post(AuthControllers.login)
 
-router.route('/logout')
-    .get(AuthControllers.logout)
+router.route('/me')
+    .delete(authenticateSessionMiddleware, AuthControllers.deleteMyUser)
 
 router.route('/')
     .get(AuthControllers.authSession)

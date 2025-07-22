@@ -183,11 +183,34 @@ function getVerifyEmail(req, res) {
         })
 }
 
+function deleteMyUser (req, res) {
+    const user_id = req.session.user.user_id
+    console.log('---> Deleting user:', user_id)
+
+    UsersServices.destroyUserById(user_id)
+        .then(data => {
+            if (data) {
+                req.session.user = null
+                res.delCookie('access-token')
+                res.status(200).json(data)
+            }
+            else res.status(404).json(data)
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                message: err.message, 
+                err
+            })
+        })
+}
+
 module.exports = {
     login,
     logout,
     postUser,
     authSession,
+    deleteMyUser,
     getVerifyEmail,
     sendEmailVerificationToken
 }

@@ -33,18 +33,18 @@ async function sendEmail(receiverEmail, token){
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'mems2001code@gmail.com',         // Your Gmail address
-      pass: 'firj begm fczp zucj',       // App password from Google
+      user: process.env.MAILER_EMAIL,         // Your Gmail address
+      pass: process.env.MAILER_PASS,       // App password from Google
     },
   });
 
   // Send the email
   const info = await transporter.sendMail({
-    from: 'mems2001code@gmail.com', 
+    from: process.env.MAILER_EMAIL, 
     to: receiverEmail,                 
     subject: 'Email verification token',  
     text: 'This is the plain text body',        
-    html: `<b>This your link for email verification:</b> <a href='https://fox-roots-backend-exq8.onrender.com/api/v1/auth/verify-email/${token}'>Verify</a>`,      
+    html: `<b>This your link for email verification:</b> <a href='http://localhost:8000/api/v1/auth/verify-email/${token}'>Verify</a>`,      
   });
 
   console.log('Message sent:', info.messageId);
