@@ -170,11 +170,18 @@ function getVerifyEmail(req, res) {
 
     AuthServices.verifyEmail(token)
         .then(data => {
-            if (data) res.status(200).json(data)
-            else res.status(400).json(data)
+            if (data) {
+                res.redirect('http://localhost:4200/me')
+                // res.status(200).json(data)
+            }
+            else {
+                res.redirect('http://localhost:4200')
+                // res.status(400).json(data)
+            }
         })
         .catch(err => {
             console.error(err)
+            // res.redirect('http://localhost:4200')
             res.status(500).json({
                 location: 'auth controllers',
                 message: err.message,

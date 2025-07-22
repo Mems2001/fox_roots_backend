@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+dotenv.config();
 
 async function sendTestEmail(receiverEmail) {
   // 1. Create a test account
@@ -44,7 +46,78 @@ async function sendEmail(receiverEmail, token){
     to: receiverEmail,                 
     subject: 'Email verification token',  
     text: 'This is the plain text body',        
-    html: `<b>This your link for email verification:</b> <a href='http://localhost:8000/api/v1/auth/verify-email/${token}'>Verify</a>`,      
+    html: `
+    <!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Verifica tu correo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 420px;
+        margin: 40px auto;
+        padding: 30px 20px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+      }
+      h1 {
+        font-size: 22px;
+        color: #000000;
+        margin-bottom: 15px;
+      }
+      p {
+        font-size: 15px;
+        color: rgb(128, 128, 128);
+        margin-bottom: 25px;
+      }
+      .btn {
+        display: inline-block;
+        background-color: #000000;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        border-radius: 6px;
+        margin-top: 10px;
+      }
+      .highlight {
+        color: red;
+        font-weight: bold;
+      }
+      .footer {
+        font-size: 12px;
+        color: rgb(128, 128, 128);
+        margin-top: 30px;
+      }
+      a.link {
+        color: blue;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Verifica tu correo electrónico</h1>
+      <p>
+        Gracias por unirte a <span class="highlight">Fox Roots</span>.<br />
+        Para completar tu registro, haz clic en el botón a continuación.
+      </p>
+      <a href='https://fox-roots-backend-exq8.onrender.com/api/v1/auth/verify-email/${token}' class="btn">Verificar cuenta</a>
+      <p class="footer">
+        Si no solicitaste esta verificación, puedes ignorar este correo o
+        <a href='http://localhost:4200' class="link">contactar soporte</a>.
+      </p>
+    </div>
+  </body>
+</html>
+    `,      
   });
 
   console.log('Message sent:', info.messageId);
