@@ -7,4 +7,7 @@ router.route('/')
 router.route('/:product_id/characteristics')
     .get(ProductsControllers.getProductCharacteristics)
 
+router.route('/:product_id/:color_id/characteristics')
+    .get(ProductsControllers.getProductCharacteristicsByColor)
+
 module.exports = router

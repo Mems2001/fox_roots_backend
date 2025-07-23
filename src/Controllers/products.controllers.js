@@ -29,7 +29,25 @@ function getProductCharacteristics (req, res) {
         })
 }
 
+function getProductCharacteristicsByColor (req, res) {
+    const product_id = req.params.product_id
+    const color_id = req.params.color_id
+    // console.log('---> Getting characteritics for:', product_id, color_id)
+
+    ProductsServices.findProductCharacteristicsByColor(product_id, color_id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
     getAllProducts,
-    getProductCharacteristics
+    getProductCharacteristics,
+    getProductCharacteristicsByColor
 }

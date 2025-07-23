@@ -24,6 +24,11 @@ module.exports = {
         id: uuid.v4(),
         name: 'black',
         code: '#000000'
+      },
+      {
+        id: uuid.v4(),
+        name: 'red',
+        code: '#ff0000'
       }
     ];
 

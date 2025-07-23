@@ -49,6 +49,33 @@ async function findAllProductIndividualsByProductId (product_id) {
     })
 }
 
+async function findAllProductIndividualsByProductIdAndColorId (product_id, color_id) {
+    return await models.ProductIndividuals.findAll({
+        where:{
+            product_id,
+            color_id
+        },
+        include: [
+            {
+                model: models.Products,
+                as: 'Product'
+            },
+            {
+                model: models.Colors,
+                as: 'Color'
+            },
+            {
+                model: models.Sizes,
+                as: 'Size'
+            }, 
+            {
+                model: models.Styles,
+                as: 'Style'
+            }
+        ]
+    })
+}
+
 async function findProductIndividualById (product_id, {color, size, style}) {
     return await models.ProductIndividuals.findOne({
         where: {
@@ -81,5 +108,6 @@ async function findProductIndividualById (product_id, {color, size, style}) {
 module.exports = {
     findAllProductIndividuals,
     findProductIndividualById,
-    findAllProductIndividualsByProductId
+    findAllProductIndividualsByProductId,
+    findAllProductIndividualsByProductIdAndColorId
 }

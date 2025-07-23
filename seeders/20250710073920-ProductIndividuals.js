@@ -96,6 +96,39 @@ module.exports = {
         stock: 4,
         price: 350
       },
+      {
+        id: uuid.v4(),
+        name: 'test 7',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'red'),
+        size_id: getElementId(sizes, 'L'),
+        style_id: getElementId(styles, 'plain'),
+        stock: 4,
+        price: 350
+      },
+      {
+        id: uuid.v4(),
+        name: 'test 8',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
+        product_id: getElementId(products, 'buso'),
+        color_id: getElementId(colors, 'red'),
+        size_id: getElementId(sizes, 'L'),
+        style_id: getElementId(styles, 'plain'),
+        stock: 9,
+        price: 35
+      },
+      {
+        id: uuid.v4(),
+        name: 'test 9',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
+        product_id: getElementId(products, 'camiseta'),
+        color_id: getElementId(colors, 'red'),
+        size_id: getElementId(sizes, 'S'),
+        style_id: getElementId(styles, 'plain'),
+        stock: 2,
+        price: 70
+      },
     ];
 
     const transaction = await queryInterface.sequelize.transaction();
