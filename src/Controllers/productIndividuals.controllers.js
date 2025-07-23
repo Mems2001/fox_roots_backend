@@ -14,12 +14,22 @@ function getAllProductIndividuals (req, res) {
 }
 
 function getProductIndividualById (req, res) {
-    ProductIndividualsServices.findProductIndividualById(req.params.prod_ind_id)
+    const productId = req.params.prod_id
+    const queries = req.query;
+    console.log('---> Searching for product:', productId)
+    console.log('---> queries:', queries)
+
+    ProductIndividualsServices.findProductIndividualById(productId, queries)
         .then(data => {
-            res.status(200).json(data)
+            if (data) res.status(200).json(data)
+            else res.status(404).json(
+                {
+                    message: 'Product not found'
+                }
+            )
         })
         .catch(err => {
-            res.status(400).json({
+            res.status(500).json({
                 message: err.message,
                 err
             })
