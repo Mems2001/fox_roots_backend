@@ -19,7 +19,9 @@ module.exports = {
           references: {
             model: 'carts',
             key: 'id'
-          }
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
         },
         individualId: {
           type: Sequelize.UUID,
@@ -28,7 +30,9 @@ module.exports = {
           references: {
             model: 'product_individuals',
             key: 'id'
-          }
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
         },
         quantity: {
           type: Sequelize.INTEGER,

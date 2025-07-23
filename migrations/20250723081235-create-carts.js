@@ -12,6 +12,17 @@ module.exports = {
           primaryKey: true,
           type: Sequelize.UUID
         },
+        userId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'user_id',
+          references: {
+            model: 'users',
+            key: 'id'
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
+        },
         quantity: {
           type: Sequelize.INTEGER,
           allowNull: false,

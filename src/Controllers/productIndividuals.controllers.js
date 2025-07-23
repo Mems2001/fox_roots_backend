@@ -13,13 +13,13 @@ function getAllProductIndividuals (req, res) {
         })
 }
 
-function getProductIndividualById (req, res) {
+function getProductIndividualByIdWithQueries (req, res) {
     const productId = req.params.prod_id
     const queries = req.query;
     console.log('---> Searching for product:', productId)
     console.log('---> queries:', queries)
 
-    ProductIndividualsServices.findProductIndividualById(productId, queries)
+    ProductIndividualsServices.findProductIndividualByProductIdWithQueries(productId, queries)
         .then(data => {
             if (data) res.status(200).json(data)
             else res.status(404).json(
@@ -38,5 +38,5 @@ function getProductIndividualById (req, res) {
 
 module.exports = {
     getAllProductIndividuals,
-    getProductIndividualById
+    getProductIndividualByIdWithQueries
 }

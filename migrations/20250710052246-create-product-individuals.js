@@ -28,22 +28,42 @@ module.exports = {
           references: {
             model: 'products',
             key: 'id'
-          }
+          },
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE'
         },
         colorId: {
           type: Sequelize.UUID,
           allowNull: false,
-          field: 'color_id'
+          field: 'color_id',
+          references: {
+            model: 'colors',
+            key: 'id'
+          },
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE'
         },
         sizeId: {
           type: Sequelize.UUID,
           allowNull: false,
-          field: 'size_id'
+          field: 'size_id',
+          references: {
+            model: 'sizes',
+            key: 'id'
+          },
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE'
         },
         styleId: {
           type: Sequelize.UUID,
           allowNull: false,
-          field: 'style_id'
+          field: 'style_id',
+          references: {
+            model: 'styles',
+            key: 'id'
+          },
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE'
         },
         stock: {
           type: Sequelize.INTEGER,

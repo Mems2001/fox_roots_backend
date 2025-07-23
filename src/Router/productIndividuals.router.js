@@ -5,6 +5,6 @@ router.route('/')
     .get(ProductIndividualsControllers.getAllProductIndividuals)
 
 router.route('/:prod_id')
-    .get( ProductIndividualsControllers.getProductIndividualById)
+    .get( ProductIndividualsControllers.getProductIndividualByIdWithQueries)
 
 module.exports = router
