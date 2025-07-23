@@ -10,7 +10,7 @@
     "mig_all": "sequelize-cli db:migrate",
     "seeds_all": "sequelize-cli db:seed:all",
     "db_reset": "bun u_mig_all && bun mig_all && bun seeds_all",
-    "deploy": "bun install && bun db_reset"
+    "deploy": "bun install && bun u_mig_all"
   },
   "author": "mems2001",
   "license": "ISC",
