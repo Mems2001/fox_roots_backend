@@ -18,6 +18,25 @@ function postCartProduct(req, res) {
         })
 }
 
+function patchCartProduct(req, res) {
+    const user_id = req.session.user.user_id
+    const individual_id = req.params.individual_id
+    console.log('---> Patch cart product controller:', user_id, individual_id)
+
+    CartProductsServices.removeCartProduct(user_id, individual_id)
+        .then(data => {
+            console.log('---> Patch cart prouct controller response:', data)
+            if (data) res.status(201).json(data)
+            else res.status(400).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: err.message,
+                err
+            })
+        })
+}
+
 function getCartProductByIndividualId(req, res) {
     const individual_id = req.params.individual_id
 
@@ -52,6 +71,7 @@ function getCartProductByProductIdAndQueries(req, res) {
 
 module.exports = {
     postCartProduct,
+    patchCartProduct,
     getCartProductByIndividualId,
     getCartProductByProductIdAndQueries
 }

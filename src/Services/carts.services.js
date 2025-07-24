@@ -39,6 +39,7 @@ async function findCartById (id) {
 
 async function addCartProductToCart(cart_id, individual_id) {
     const transaction = await models.sequelize.transaction()
+    console.log('---> Adding product to cart:', cart_id, individual_id)
 
     try {
         const cart = await findCartById(cart_id)

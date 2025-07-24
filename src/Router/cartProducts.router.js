@@ -6,6 +6,9 @@ const { authenticateSessionMiddleware } = require('../Middlewares/session.middle
 router.route('/with-queries/:product_id')
     .get(CartProductsControllers.getCartProductByProductIdAndQueries)
 
+router.route('/remove/:individual_id')
+    .patch(authenticateSessionMiddleware, CartProductsControllers.patchCartProduct)
+
 router.route('/add/:individual_id')
     .post(authenticateSessionMiddleware, CartProductsControllers.postCartProduct)
 
