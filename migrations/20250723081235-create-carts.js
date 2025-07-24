@@ -30,7 +30,8 @@ module.exports = {
         },
         total: {
           type: Sequelize.DOUBLE,
-          allowNull: false
+          allowNull: false,
+          defaultValue: 0
         },
         createdAt: {
             allowNull: false,

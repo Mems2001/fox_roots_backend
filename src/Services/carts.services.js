@@ -6,9 +6,10 @@ async function createCart(user_id) {
     const transaction = await models.sequelize.transaction()
 
     try {
-        const newCart = await models.create({
+        const newCart = await models.Carts.create({
             id: uuid.v4(),
-            user_id
+            user_id,
+            total: 0
         }, {transaction})
 
         await transaction.commit()

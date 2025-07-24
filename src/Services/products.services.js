@@ -54,7 +54,7 @@ async function findProductCharacteristics(product_id) {
     })
     const styles = Array.from(uniqueStylesMap.values())
 
-    console.log('---> Found this from characteristics search:', products, {colors, sizes, styles})
+    // console.log('---> Found this from characteristics search:', products, {colors, sizes, styles})
 
     return {
         colors,
@@ -104,7 +104,7 @@ async function findProductCharacteristicsByColor(product_id, color_id) {
     })
     const styles = Array.from(uniqueStylesMap.values())
 
-    console.log('---> Found this from characteristics search 2:', products, {colors, sizes, styles})
+    // console.log('---> Found this from characteristics search 2:', products, {colors, sizes, styles})
 
     return {
         colors,
