@@ -12,7 +12,10 @@ router.route('/remove/:individual_id')
 router.route('/add/:individual_id')
     .post(authenticateSessionMiddleware, CartProductsControllers.postCartProduct)
 
-router.route('/:individual_id')
-    .get(CartProductsControllers.getCartProductByIndividualId)
+router.route('/my-cart')
+    .get(authenticateSessionMiddleware, CartProductsControllers.getAllCartProductsByUser)
 
+// router.route('/:individual_id')
+//     .get(CartProductsControllers.getCartProductByIndividualId)
+    
 module.exports = router

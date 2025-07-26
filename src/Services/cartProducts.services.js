@@ -12,11 +12,14 @@ async function addCartProduct(user_id, individual_id) {
     const transaction = await models.sequelize.transaction()
 
     try {
+        //We first check if there is a cart and cartProduct related
         let cart = await CartsServices.findCartByUserId(user_id)
         let cartProduct = await findCartProductByIndividualId(individual_id)
 
+        //If there was no cart, then we create one, otherwise we update it
         if (!cart) cart = await CartsServices.createCart(user_id)
 
+        //Same applies to the cartProduct
         if (!cartProduct) {
             cartProduct = await models.CartProducts.create({
                 id: uuid.v4(),
@@ -32,9 +35,13 @@ async function addCartProduct(user_id, individual_id) {
 
         if (!cartProduct) return null
         
+        //Next, we add the cartProdcut to the cart
         cart = await CartsServices.addCartProductToCart(cart.id, individual_id)
 
         await transaction.commit()
+
+        //Finally, before we return the cartProduct we need to recall it to use the model defaultScope
+        cartProduct = await findCartProductByIndividualId(individual_id)
 
         return {cart, cartProduct}
     } catch (error) {
@@ -104,13 +111,7 @@ async function findCartProductByIndividualId(individual_id) {
     return await models.CartProducts.findOne({
         where: {
             individual_id
-        },
-        include: [
-            {
-                model: models.ProductIndividuals,
-                as: 'Individual'
-            }
-        ]
+        }
     })
 }
 
@@ -124,11 +125,22 @@ async function findCartProductByProductIdAndQueire(product_id, {color, size, sty
     const cartProduct = await findCartProductByIndividualId(individual.id)
 
     return cartProduct
-} 
+}
+
+async function findAllCartProductsByUser(user_id) {
+    const cart = await CartsServices.findCartByUserId(user_id)
+
+    return await models.CartProducts.findAll({
+        where: {
+            cart_id: cart.id
+        }
+    })
+}
 
 module.exports = {
     findCartProductByProductIdAndQueire,
     findCartProductByIndividualId,
+    findAllCartProductsByUser,
     findCartProductById,
     removeCartProduct,
     addCartProduct
