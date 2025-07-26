@@ -21,7 +21,9 @@ module.exports = {
         id: uuid.v4(),
         username: 'mems2001',
         password: hashPassword('1234'),
-        email: 'mems2001code@gmail.com' 
+        email: 'mems2001code@gmail.com',
+        email_verification_token: uuid.v4(),
+        phone_verification_token: uuid.v4()
       }
     ]
 
@@ -33,6 +35,10 @@ module.exports = {
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
+      console.log({
+        message: error.message,
+        error
+      })
       throw {
         message: error.message,
         error
@@ -57,8 +63,13 @@ module.exports = {
           }
         }
       } , {transaction})
+      await transaction.commit()
     } catch (error) {
       await transaction.rollback()
+      console.log({
+        message: error.message,
+        error
+      })
       throw {
         message: error.message,
         error
