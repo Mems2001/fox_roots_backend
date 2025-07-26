@@ -130,11 +130,15 @@ async function findCartProductByProductIdAndQueire(product_id, {color, size, sty
 async function findAllCartProductsByUser(user_id) {
     const cart = await CartsServices.findCartByUserId(user_id)
 
-    return await models.CartProducts.findAll({
-        where: {
-            cart_id: cart.id
-        }
-    })
+    if (cart) {
+        return await models.CartProducts.findAll({
+            where: {
+                cart_id: cart.id
+            }
+        })
+    }
+
+    return null
 }
 
 module.exports = {
