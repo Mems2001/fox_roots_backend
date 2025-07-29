@@ -30,6 +30,26 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'style_id',
         as: 'Style'
       })
+      ProductIndividuals.addScope('defaultScope', {
+        include: [
+          {
+            model: sequelize.models.Products,
+            as: 'Product'
+          },
+          {
+            model: sequelize.models.Colors,
+            as: 'Color'
+          },
+          {
+            model: sequelize.models.Sizes,
+            as: 'Size'
+          }, 
+          {
+            model: sequelize.models.Styles,
+            as: 'Style'
+          }
+        ]
+      })
     }
   }
   ProductIndividuals.init({

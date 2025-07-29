@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
               as: 'Style'
             }
           ]
+        },
+        {
+          model: sequelize.models.Carts,
+          as: 'Cart'
         }
       ]
       })

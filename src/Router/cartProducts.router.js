@@ -6,6 +6,9 @@ const { authenticateSessionMiddleware } = require('../Middlewares/session.middle
 router.route('/with-queries/:product_id')
     .get(CartProductsControllers.getCartProductByProductIdAndQueries)
 
+router.route('/delete/:individual_id')
+    .delete(authenticateSessionMiddleware, CartProductsControllers.deleteCartProductByIndividualId)
+        
 router.route('/remove/:individual_id')
     .patch(authenticateSessionMiddleware, CartProductsControllers.patchCartProduct)
 

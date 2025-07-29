@@ -141,8 +141,50 @@ async function findAllCartProductsByUser(user_id) {
     return null
 }
 
+async function destroyCartProductByIndividualId(user_id , individual_id) {
+    const transaction = await models.sequelize.transaction()
+
+    try {
+        let cart = await CartsServices.findCartByUserId(user_id)
+        const oldCartProduct = await findCartProductByIndividualId(individual_id)
+        let cartProduct = oldCartProduct
+
+        await cartProduct.destroy({transaction})
+        
+        console.log('---> Deleting cart product:', cartProduct)
+
+        if (oldCartProduct.quantity === cart.quantity) {
+            await cart.destroy({transaction})
+        } else if (cart.quantity > cartProduct.quantity) {
+            await cart.update({
+                quantity: cart.quantity - cartProduct.quantity,
+                total: cart.total - (oldCartProduct.quantity * oldCartProduct.Individual.price)
+            }, {transaction})
+        }
+
+        await transaction.commit()
+        
+        cart = await CartsServices.findCartByUserId(user_id)
+        cartProduct = await findCartProductByIndividualId(individual_id)
+
+        return {
+            cart,
+            cartProduct
+        }
+    } catch (error) {
+        await transaction.rollback()
+        console.error({
+            location: 'destroy cartProduct service',
+            message: error.message,
+            error
+        })
+        throw error
+    }
+}
+
 module.exports = {
     findCartProductByProductIdAndQueire,
+    destroyCartProductByIndividualId,
     findCartProductByIndividualId,
     findAllCartProductsByUser,
     findCartProductById,
