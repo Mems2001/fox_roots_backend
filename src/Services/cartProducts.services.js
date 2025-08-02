@@ -134,7 +134,10 @@ async function findAllCartProductsByUser(user_id) {
         return await models.CartProducts.findAll({
             where: {
                 cart_id: cart.id
-            }
+            },
+            order: [
+                [{model: models.ProductIndividuals, as: 'Individual'}, 'name', 'ASC']
+            ]
         })
     }
 

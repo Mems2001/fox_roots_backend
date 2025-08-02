@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const ProductIndividualsServices = require('../Services/productIndividuals.services');
 
 function getAllProductIndividuals (req, res) {
@@ -36,7 +37,25 @@ function getProductIndividualByIdWithQueries (req, res) {
         })
 }
 
+async function getProductIndividualsByName(req, res) {
+    const {name} = req.query
+
+    ProductIndividualsServices.findProductIndividualsByName(name)
+        .then(data => {
+            if (data) res.status(200).json(data)
+            else res.status(404).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                location: 'get product individuals by name controller:',
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
     getAllProductIndividuals,
+    getProductIndividualsByName,
     getProductIndividualByIdWithQueries
 }

@@ -4,7 +4,7 @@ const CartProductsControllers = require('../Controllers/cartProducts.controllers
 const { authenticateSessionMiddleware } = require('../Middlewares/session.middleware')
 
 router.route('/with-queries/:product_id')
-    .get(CartProductsControllers.getCartProductByProductIdAndQueries)
+    .get(authenticateSessionMiddleware, CartProductsControllers.getCartProductByProductIdAndQueries)
 
 router.route('/delete/:individual_id')
     .delete(authenticateSessionMiddleware, CartProductsControllers.deleteCartProductByIndividualId)

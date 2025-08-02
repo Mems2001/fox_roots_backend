@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const models = require('../../models');
 
 async function findAllProductIndividuals () {
@@ -40,9 +41,25 @@ async function findIndividualById (id) {
     })
 }
 
+async function findProductIndividualsByName(name) {
+    const individuals = await models.ProductIndividuals.findAll({
+        where: {
+            name: {
+                [Op.iLike]: `%${name}%`
+            }
+        },
+        order: [
+            ['name', 'ASC']
+        ]
+    })
+
+    return individuals
+}
+
 module.exports = {
     findIndividualById,
     findAllProductIndividuals,
+    findProductIndividualsByName,
     findAllProductIndividualsByProductId,
     findProductIndividualByProductIdWithQueries,
     findAllProductIndividualsByProductIdAndColorId
