@@ -13,6 +13,20 @@ async function findAllProducts () {
         return await Models.Products.findAll()
 }
 
+async function findAllProductCharacteristics() {
+  const products = await Models.Products.findAll()
+  const colors = await Models.Colors.findAll()
+  const sizes = await Models.Sizes.findAll()
+  const styles = await Models.Styles.findAll()
+
+  return {
+    products,
+    colors,
+    sizes,
+    styles
+  }
+}
+
 async function findProductCharacteristics(product_id) {
     const products = await ProductIndividualsServices.findAllProductIndividualsByProductId(product_id)
 
@@ -117,5 +131,6 @@ module.exports = {
     findProductById,
     findAllProducts,
     findProductCharacteristics,
+    findAllProductCharacteristics,
     findProductCharacteristicsByColor
 }

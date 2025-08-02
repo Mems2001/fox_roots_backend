@@ -38,8 +38,9 @@ module.exports = {
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'S'),
         style_id: getElementId(styles, 'plain'),
-        stock: 5,
-        price: 10
+        stock: 6,
+        price: 10,
+        featured_by: 2
       },
       {
         id: uuid.v4(),
@@ -49,8 +50,9 @@ module.exports = {
         color_id: getElementId(colors, 'white'),
         size_id: getElementId(sizes, 'L'),
         style_id: getElementId(styles, 'plain'),
-        stock: 3,
-        price: 100
+        stock: 7,
+        price: 100,
+        featured_by: 2
       },
       {
         id: uuid.v4(),
@@ -72,7 +74,8 @@ module.exports = {
         size_id: getElementId(sizes, 'M'),
         style_id: getElementId(styles, 'plain'),
         stock: 2,
-        price: 50
+        price: 50,
+        featured_by: 1
       },
       {
         id: uuid.v4(),
@@ -83,7 +86,8 @@ module.exports = {
         size_id: getElementId(sizes, 'S'),
         style_id: getElementId(styles, 'plain'),
         stock: 1,
-        price: 500
+        price: 500,
+        featured_by: 1
       },
       {
         id: uuid.v4(),
@@ -104,8 +108,9 @@ module.exports = {
         color_id: getElementId(colors, 'red'),
         size_id: getElementId(sizes, 'L'),
         style_id: getElementId(styles, 'plain'),
-        stock: 4,
-        price: 350
+        stock: 8,
+        price: 350,
+        featured_by: 3
       },
       {
         id: uuid.v4(),
@@ -126,9 +131,21 @@ module.exports = {
         color_id: getElementId(colors, 'red'),
         size_id: getElementId(sizes, 'S'),
         style_id: getElementId(styles, 'plain'),
-        stock: 2,
+        stock: 6,
         price: 70
       },
+      {
+        id: uuid.v4(),
+        name: 'test 10',
+        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
+        product_id: getElementId(products, 'camiseta'),
+        color_id: getElementId(colors, 'red'),
+        size_id: getElementId(sizes, 'M'),
+        style_id: getElementId(styles, 'plain'),
+        stock: 7,
+        price: 15,
+        featured_by: 3
+      }
     ];
 
     const transaction = await queryInterface.sequelize.transaction();

@@ -37,7 +37,7 @@ function getProductIndividualByIdWithQueries (req, res) {
         })
 }
 
-async function getProductIndividualsByName(req, res) {
+function getProductIndividualsByName(req, res) {
     const {name} = req.query
 
     ProductIndividualsServices.findProductIndividualsByName(name)
@@ -54,7 +54,22 @@ async function getProductIndividualsByName(req, res) {
         })
 }
 
+function getFeaturedIndividuals(req, res) {
+    ProductIndividualsServices.findFeaturedIndividuals()
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                location: 'get featured individuals controller',
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
+    getFeaturedIndividuals,
     getAllProductIndividuals,
     getProductIndividualsByName,
     getProductIndividualByIdWithQueries

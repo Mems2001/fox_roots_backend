@@ -61,7 +61,8 @@ module.exports = (sequelize, DataTypes) => {
     style_id: DataTypes.UUID,
     stock: DataTypes.INTEGER,
     price: DataTypes.DOUBLE,
-    rating: DataTypes.DOUBLE
+    rating: DataTypes.DOUBLE,
+    featured_by: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ProductIndividuals',

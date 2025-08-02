@@ -79,6 +79,11 @@ module.exports = {
           allowNull: false,
           defaultValue: 0
         },
+        featuredBy: {
+          type: Sequelize.INTEGER,
+          field: 'featured_by',
+          defaultValue: 0 //0 Not featured, 1 most selled, 2 most popular, 3 seasonal
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

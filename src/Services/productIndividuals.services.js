@@ -56,8 +56,22 @@ async function findProductIndividualsByName(name) {
     return individuals
 }
 
+async function findFeaturedIndividuals() {
+    return await models.ProductIndividuals.findAll({
+        where: {
+            featured_by: {
+                [Op.gt]: 0
+            }
+        },
+        order: [
+            ['name', 'ASC']
+        ]
+    })
+}
+
 module.exports = {
     findIndividualById,
+    findFeaturedIndividuals,
     findAllProductIndividuals,
     findProductIndividualsByName,
     findAllProductIndividualsByProductId,

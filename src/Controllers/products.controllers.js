@@ -13,6 +13,20 @@ function getAllProducts (req, res) {
         })
 }
 
+function getAllProductCharacteristics(req, res) {
+    ProductsServices.findAllProductCharacteristics()
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                location: 'get all product characteristics controller',
+                message: err.message,
+                err
+            })
+        })
+}
+
 function getProductCharacteristics (req, res) {
     const id = req.params.product_id
     // console.log('---> Getting characteritics for:', id)
@@ -49,5 +63,6 @@ function getProductCharacteristicsByColor (req, res) {
 module.exports = {
     getAllProducts,
     getProductCharacteristics,
+    getAllProductCharacteristics,
     getProductCharacteristicsByColor
 }
