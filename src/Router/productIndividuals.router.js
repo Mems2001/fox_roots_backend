@@ -11,6 +11,6 @@ router.route('/:prod_id')
     .get(ProductIndividualsControllers.getProductIndividualByIdWithQueries)
 
 router.route('/search/queries')
-    .get(ProductIndividualsControllers.getProductIndividualsByName)
+    .post(ProductIndividualsControllers.getFilteredProducts)
 
 module.exports = router

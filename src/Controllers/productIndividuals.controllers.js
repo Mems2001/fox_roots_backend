@@ -37,17 +37,20 @@ function getProductIndividualByIdWithQueries (req, res) {
         })
 }
 
-function getProductIndividualsByName(req, res) {
-    const {name} = req.query
+function getFilteredProducts(req, res) {
+    let name
+    if (req.query) {
+        name = req.query.name
+    }
 
-    ProductIndividualsServices.findProductIndividualsByName(name)
+    ProductIndividualsServices.findFilteredInidividuals(req.body || {products:[], colors:[], sizes:[], styles:[]}, name)
         .then(data => {
             if (data) res.status(200).json(data)
             else res.status(404).json(data)
         })
         .catch(err => {
             res.status(500).json({
-                location: 'get product individuals by name controller:',
+                location: 'get filtered products controller',
                 message: err.message,
                 err
             })
@@ -69,8 +72,8 @@ function getFeaturedIndividuals(req, res) {
 }
 
 module.exports = {
+    getFilteredProducts,
     getFeaturedIndividuals,
     getAllProductIndividuals,
-    getProductIndividualsByName,
     getProductIndividualByIdWithQueries
 }

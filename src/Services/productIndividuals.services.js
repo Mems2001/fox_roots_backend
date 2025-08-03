@@ -41,19 +41,33 @@ async function findIndividualById (id) {
     })
 }
 
-async function findProductIndividualsByName(name) {
-    const individuals = await models.ProductIndividuals.findAll({
-        where: {
-            name: {
-                [Op.iLike]: `%${name}%`
-            }
-        },
+async function findFilteredInidividuals ({products, colors, sizes, styles}, name) {
+    const where = {}
+
+    if (products.length > 0) {
+        where.product_id = {[Op.in]: products}
+    }
+    if (colors.length > 0) {
+        where.color_id = {[Op.in]: colors}
+    }
+    if (sizes.length > 0) {
+        where.size_id = {[Op.in]: sizes}
+    }
+    if (styles.length > 0) {
+        where.style_id = {[Op.in]: styles}
+    }
+    if (name && name.trim() !== '') {
+        where.name = {[Op.iLike]: `%${name}%`}
+    }
+
+    const response = await models.ProductIndividuals.findAll({
+        where,
         order: [
             ['name', 'ASC']
         ]
     })
-
-    return individuals
+    
+    return response
 }
 
 async function findFeaturedIndividuals() {
@@ -72,8 +86,8 @@ async function findFeaturedIndividuals() {
 module.exports = {
     findIndividualById,
     findFeaturedIndividuals,
+    findFilteredInidividuals,
     findAllProductIndividuals,
-    findProductIndividualsByName,
     findAllProductIndividualsByProductId,
     findProductIndividualByProductIdWithQueries,
     findAllProductIndividualsByProductIdAndColorId
