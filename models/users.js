@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Carts, {
         foreignKey: 'user_id'
       })
+      Users.belongsTo(models.Roles, {
+        foreignKey: 'role_id',
+        as: 'Role'
+      })
     }
   }
   Users.init({
@@ -29,7 +33,19 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Users',
-    tableName: 'users'
+    tableName: 'users',
+    defaultScope: {
+      attributes: {
+        exclude: ['password', 'email_verification_token', 'phone_verification_token']
+      }
+    },
+    scopes:{
+      withSensitiveData: {
+        attributes: {
+          include: ['password', 'email_verification_token', 'phone_verification_token']
+        }
+      }
+    }
   });
   return Users;
 };

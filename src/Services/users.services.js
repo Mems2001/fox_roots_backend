@@ -1,19 +1,54 @@
 const uuid = require('uuid');
 const models = require('../../models');
 const { hashPassword } = require('../../utils/bcrypt');
-const { sendTestEmail, sendEmail } = require('../../utils/mailer');
+const RolesServices = require('../Services/roles.services');
 
-async function createUser({username, email, phone, password}) {
-    const userData = {
-        id: uuid.v4(),
-        username,
-        email,
-        email_verification_token: uuid.v4(),
-        phone: phone? phone : undefined,
-        phone_verification_token: uuid.v4(),
-        password: hashPassword(password)
+/**
+ * This function hndles both regular user and anon user creation. Toggles between those function by receiving a role param.
+ * @param {string} role A string that specifies the type of user requested. If undefined, it will be regular user.
+ * @param {string} id Uuid like string that is provided only for ANON user requests.
+ * @param {string} username
+ * @param {string} email
+ * @param {string} phone
+ * @param {string} password
+ * @returns 
+ */
+async function createUser(role_name, id, {username, email, phone, password}) {
+    console.log('creating: ', role_name, id)
+    let role
+    if (role_name) {
+        role = await RolesServices.findRoleByName(role_name)
+    } else {
+        role = await RolesServices.findRoleByName('CLIENT')
     }
 
+    //This data will change if the requested user is ANON
+    let userData
+
+    if (role_name) {
+        userData = {
+            id,
+            role_id: role.id,
+            username: 'anon-' + id,
+            email: id + '@anon.com',
+            email_verification_token: uuid.v4(),
+            phone_verification_token: uuid.v4(),
+            password: hashPassword(id)
+        }
+    } else {
+        userData = {
+            id: uuid.v4(),
+            role_id: role.id,
+            username,
+            email,
+            email_verification_token: uuid.v4(),
+            phone: phone? phone : undefined,
+            phone_verification_token: uuid.v4(),
+            password: hashPassword(password)
+        }
+    }
+
+    // console.log('user data: ', role_name, userData)
     const transaction = await models.sequelize.transaction()
 
     try {
@@ -22,7 +57,8 @@ async function createUser({username, email, phone, password}) {
         return newUser
     } catch (error) {
         await transaction.rollback()
-        console.error('users services:', error)
+        console.log('users services:', error)
+        throw error
     }
 }
 
@@ -35,7 +71,7 @@ async function findUserByUsername (username) {
 }
 
 async function findUserByEmail (email) {
-    return await models.Users.findOne({
+    return await models.Users.scope('withSensitiveData').findOne({
         where: {
             email
         }
@@ -43,7 +79,7 @@ async function findUserByEmail (email) {
 }
 
 async function findUserByPhone (phone) {
-    return await models.Users.findOne({
+    return await models.Users.scope('withSensitiveData').findOne({
         where: {
             phone
         }

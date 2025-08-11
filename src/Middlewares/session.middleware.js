@@ -3,8 +3,9 @@ const { verify } = require('jsonwebtoken')
 function authenticateSessionMiddleware ( req , res , next ) {
     try {
         const access_token = req.cookies['access-token']
+        
         console.log('---> auth middleware:', access_token)
-        const data = verify(access_token , process.env.JWT_SECRET)
+        const data = verify(access_token, process.env.JWT_SECRET)
         console.log('---> auth middleware:', data)
         if (data) {
             req.session.user = data

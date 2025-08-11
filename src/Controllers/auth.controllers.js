@@ -3,6 +3,7 @@ const { comparePasswords } = require('../../utils/bcrypt');
 const { generateJWT } = require('../../utils/generate-jwt');
 const AuthServices = require('../Services/auth.services');
 const UsersServices = require('../Services/users.services');
+const RolesServices = require('../Services/roles.services')
 
 async function postUser (req, res) {
     const {username} = req.body
@@ -17,7 +18,7 @@ async function postUser (req, res) {
         })
     }
 
-    UsersServices.createUser(req.body)
+    UsersServices.createUser(undefined, undefined, req.body)
         .then(data => {
             res.status(201).json(data)
         })
@@ -54,6 +55,7 @@ async function login (req, res) {
         }
 
         //Password validation
+        console.log('password validation:', password, user)
         const validatePassword = await comparePasswords(password, user.password)
         if (!validatePassword) {
             return res.status(400).json({
@@ -62,7 +64,7 @@ async function login (req, res) {
         }
 
         //JWT generation
-        const accesToken = await generateJWT(user.id , '1d');
+        const accesToken = await generateJWT(user.id , user.role_id, '1d');
         // const refreshToken = await generateJWT(user.id , user.role_id , '7 d');
         res.setCookie('access-token', accesToken)
         // res.cookie('refresh-token' , refreshToken)
@@ -114,11 +116,20 @@ async function authSession(req, res) {
             if (user) {
                 req.session.user = data
                 console.log(user.username, ' authenticated')
-                res.status(200).json({
-                    session_authenticated: true,
-                    message: "Session authenticated",
-                    user_id: user.id,
-                })
+                const anonRole = await RolesServices.findRoleByName('ANON')
+                if (user.role_id === anonRole.id) {
+                    res.status(200).json({
+                        session_authenticated: false,
+                        message: "Anon User, session not authenticated",
+                        user_id: user.id,
+                    })
+                } else {
+                    res.status(200).json({
+                        session_authenticated: true,
+                        message: "Session authenticated",
+                        user_id: user.id,
+                    })
+                }
             } else {
                 req.session.user = null
                 res.delCookie('access-token')
@@ -145,6 +156,34 @@ async function authSession(req, res) {
             error
         })
     }
+}
+
+/**
+ * Creates an anonymous user 
+ */
+async function postAnon(req, res) {
+    const {id} = req.body
+
+    UsersServices.createUser('ANON', id, {undefined, undefined, undefined, undefined})
+        .then(data => {
+            res.status(201).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                location: 'postAnon, auth controller',
+                message: err.message,
+                err
+            })
+        })
+
+    // const token = await generateJWT(id, '1d')
+
+    // res.setCookie('access-token', token)
+    // res.status(201).json({
+    //     session_authenticated: false,
+    //     message: 'Anon user created',
+    //     user_id: id
+    // })
 }
 
 function sendEmailVerificationToken (req, res) {
@@ -215,6 +254,7 @@ module.exports = {
     login,
     logout,
     postUser,
+    postAnon,
     authSession,
     deleteMyUser,
     getVerifyEmail,

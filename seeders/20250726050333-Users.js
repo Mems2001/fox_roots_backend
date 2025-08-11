@@ -1,5 +1,6 @@
 'use strict';
 
+const rolesServices = require('../src/Services/roles.services')
 const uuid = require('uuid');
 const { hashPassword } = require('../utils/bcrypt');
 const { Op } = require('sequelize');
@@ -16,9 +17,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   const admin = await rolesServices.findRoleByName('ADMIN').catch(error => console.error(error))
+
     const users = [
       {
         id: uuid.v4(),
+        role_id: admin.id,
         username: 'mems2001',
         password: hashPassword('1234'),
         email: 'mems2001code@gmail.com',

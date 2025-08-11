@@ -16,7 +16,13 @@ async function sendEmailVerificationToken(id) {
     return true
 }
 
+/**
+ * This function verifies the email by first checking the token authenticity, and then simply updates the email_verify field in the user table and creates a new token in case of new email verifycation needed.
+ * @param {string} token A uuid like string
+ * @returns 
+ */
 async function verifyEmail(token) {
+    //To verify token's authenticity we simply search for a user which email_token field matches with the provided param.
     const user = await UsersServices.findUserByEmailToken(token)
     const transaction = await models.sequelize.transaction()
     console.log('---> Verifying email for:', user.email, 'with token:', token)

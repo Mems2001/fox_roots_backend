@@ -1,4 +1,7 @@
 'use strict';
+
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -11,6 +14,17 @@ module.exports = {
           unique: true,
           primaryKey: true,
           type: Sequelize.UUID
+        },
+        roleId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          field: 'role_id',
+          references: {
+            model: 'roles',
+            key: 'id'
+          },
+          onDelete: 'RESTRICT',
+          onUpdate: 'CASCADE'
         },
         username: {
           type: Sequelize.STRING,
@@ -68,17 +82,17 @@ module.exports = {
           field: 'profile_image'
         },
         createdAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
-            field: 'created_at',
-            defaultValue: new Date()
-          },
-          updatedAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
-            field: 'updated_at',
-            defaultValue: new Date()
-          }
+          allowNull: false,
+          type: Sequelize.DATE,
+          field: 'created_at',
+          defaultValue: new Date()
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          field: 'updated_at',
+          defaultValue: new Date()
+        }
       }, {transaction});
 
       await transaction.commit()

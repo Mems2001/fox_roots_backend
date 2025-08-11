@@ -5,47 +5,31 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      await queryInterface.createTable('carts', {
+      await queryInterface.createTable('roles', {
         id: {
           allowNull: false,
           unique: true,
           primaryKey: true,
           type: Sequelize.UUID
         },
-        userId: {
-          type: Sequelize.UUID,
-          allowNull: true,
-          field: 'user_id',
-          references: {
-            model: 'users',
-            key: 'id'
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
-        },
-        quantity: {
-          type: Sequelize.INTEGER,
+        name: {
+          type: Sequelize.STRING,
           allowNull: false,
-          defaultValue: 0
+          unique: true
         },
-        total: {
-          type: Sequelize.DOUBLE,
+         createdAt: {
           allowNull: false,
-          defaultValue: 0
+          type: Sequelize.DATE,
+          field: 'created_at',
+          defaultValue: new Date()
         },
-        createdAt: {
-            allowNull: false,
-            type: Sequelize.DATE,
-            field: 'created_at',
-            defaultValue: new Date()
-          },
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at',
           defaultValue: new Date()
         }
-      }, {transaction});
+      }, {transaction})
 
       await transaction.commit()
     } catch (error) {
@@ -57,8 +41,8 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      await queryInterface.dropTable('carts', {transaction});
-
+      await queryInterface.dropTable('roles', {transaction})
+      
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

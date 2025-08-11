@@ -18,6 +18,9 @@ router.route('/logout')
 router.route('/login')
     .post(AuthControllers.login)
 
+router.route('/anon')
+    .post(AuthControllers.postAnon)
+
 router.route('/me')
     .delete(authenticateSessionMiddleware, AuthControllers.deleteMyUser)
 
