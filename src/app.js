@@ -9,6 +9,7 @@ const AuthRouter = require('./Router/auth.router.js');
 const CartsRouter = require('./Router/carts.router.js');
 const UsersRouter = require('./Router/users.router.js');
 const ProductsRouter = require('./Router/products.router.js');
+const FavoritesRouter = require('./Router/favorites.router.js');
 const CartProductsRouter = require('./Router/cartProducts.router.js');
 const ProductIndividualsRouter = require('./Router/productIndividuals.router.js');
 
@@ -76,6 +77,7 @@ app.use('/api/v1/auth', AuthRouter)
 app.use('/api/v1/users', UsersRouter)
 app.use('/api/v1/carts', CartsRouter)
 app.use('/api/v1/products', ProductsRouter)
+app.use('/api/v1/favorites', FavoritesRouter)
 app.use('/api/v1/cart-products', CartProductsRouter)
 app.use('/api/v1/individuals', ProductIndividualsRouter)
 

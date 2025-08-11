@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       ProductIndividuals.hasMany(models.CartProducts, {
         foreignKey: 'individual_id'
       })
+      ProductIndividuals.hasMany(models.Favorites, {
+        foreignKey: 'individual_id'
+      })
       ProductIndividuals.belongsTo(models.Products, {
         foreignKey: 'product_id',
         as: 'Product'
@@ -30,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'style_id',
         as: 'Style'
       })
+
       ProductIndividuals.addScope('defaultScope', {
         include: [
           {
