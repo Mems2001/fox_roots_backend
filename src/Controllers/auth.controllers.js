@@ -3,7 +3,8 @@ const { comparePasswords } = require('../../utils/bcrypt');
 const { generateJWT } = require('../../utils/generate-jwt');
 const AuthServices = require('../Services/auth.services');
 const UsersServices = require('../Services/users.services');
-const RolesServices = require('../Services/roles.services')
+const RolesServices = require('../Services/roles.services');
+const CartsServices = require('../Services/carts.services')
 
 async function postUser (req, res) {
     const {username} = req.body
@@ -32,6 +33,7 @@ async function postUser (req, res) {
 
 async function login (req, res) {
     const {withPhone, withEmail, email, phone, password} = req.body
+    const cookie = req.cookies['access-token']
 
     try {
         let user
@@ -55,12 +57,20 @@ async function login (req, res) {
         }
 
         //Password validation
-        console.log('password validation:', password, user)
         const validatePassword = await comparePasswords(password, user.password)
         if (!validatePassword) {
             return res.status(400).json({
                 message: 'Wrong password'
             })
+        }
+
+        //Cart reassignation
+        if (cookie) {
+            const anon_user = verify(cookie, process.env.JWT_SECRET)
+            const cart = await CartsServices.findCartByUserId(anon_user.user_id)
+            if (cart) {
+                await CartsServices.reassingCartByUserId(user.id, cart.id)
+            }
         }
 
         //JWT generation

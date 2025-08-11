@@ -69,8 +69,26 @@ async function addCartProductToCart(cart_id, individual_id) {
     }
 }
 
+async function reassingCartByUserId(user_id, cart_id) {
+    const transaction = await models.sequelize.transaction()
+
+    try {
+        let cart = await findCartById(cart_id)
+        cart = await cart.update({
+            user_id
+        }, {transction})
+        await transaction.commit()
+        return cart
+    } catch (error) {
+        await transaction.rollback()
+        console.error(error)
+        throw error
+    }
+}
+
 module.exports = {
     createCart,
     findCartByUserId,
-    addCartProductToCart
+    addCartProductToCart,
+    reassingCartByUserId
 }
