@@ -76,7 +76,7 @@ async function reassingCartByUserId(user_id, cart_id) {
         let cart = await findCartById(cart_id)
         cart = await cart.update({
             user_id
-        }, {transction})
+        }, {transaction})
         await transaction.commit()
         return cart
     } catch (error) {

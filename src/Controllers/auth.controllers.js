@@ -67,8 +67,9 @@ async function login (req, res) {
         //Cart reassignation
         if (cookie) {
             const anon_user = verify(cookie, process.env.JWT_SECRET)
-            const cart = await CartsServices.findCartByUserId(anon_user.user_id)
-            if (cart) {
+            const cart = await CartsServices.findCartByUserId(user.id)
+            const anonCart = await CartsServices.findCartByUserId(anon_user.user_id)
+            if (!cart && anonCart) {
                 await CartsServices.reassingCartByUserId(user.id, cart.id)
             }
         }
