@@ -11,7 +11,7 @@ const UsersRouter = require('./Router/users.router.js');
 const ProductsRouter = require('./Router/products.router.js');
 const FavoritesRouter = require('./Router/favorites.router.js');
 const CartProductsRouter = require('./Router/cartProducts.router.js');
-const ProductIndividualsRouter = require('./Router/productIndividuals.router.js');
+const ProductIndividualsRouter = require('./Router/productIndividuals.router.js')
 
 //API SETTINGS
 dotenv.config();
