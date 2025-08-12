@@ -70,7 +70,7 @@ async function login (req, res) {
             const cart = await CartsServices.findCartByUserId(user.id)
             const anonCart = await CartsServices.findCartByUserId(anon_user.user_id)
             if (!cart && anonCart) {
-                await CartsServices.reassingCartByUserId(user.id, cart.id)
+                await CartsServices.reassingCartByUserId(user.id, anonCart.id)
             }
         }
 
