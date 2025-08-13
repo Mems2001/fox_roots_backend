@@ -61,6 +61,7 @@ async function addCartProductToCart(cart_id, individual_id) {
     } catch (error) {
         await transaction.rollback()
         const err = {
+            location: 'Add cart product to cart service',
             message: error.message,
             error
         }

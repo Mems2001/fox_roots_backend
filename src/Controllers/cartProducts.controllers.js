@@ -12,6 +12,7 @@ function postCartProduct(req, res) {
         })
         .catch(err => {
             res.status(500).json({
+                location: 'postCartProduct controller',
                 message: err.message,
                 err
             })
@@ -57,10 +58,12 @@ function getCartProductByIndividualId(req, res) {
 function getCartProductByProductIdAndQueries(req, res) {
     const product_id = req.params.product_id
     const queries = req.query
+    const user_id = req.session.user.user_id
 
-    CartProductsServices.findCartProductByProductIdAndQueire(product_id, queries)
+    CartProductsServices.findCartProductByProductIdAndQueire(product_id, user_id, queries)
         .then(data => {
-            res.status(200).json(data)
+            if (data) res.status(200).json(data)
+            else res.status(404).json(data)
         })
         .catch(err => {
             res.status(500).json({

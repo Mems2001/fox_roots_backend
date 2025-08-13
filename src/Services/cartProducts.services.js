@@ -12,9 +12,10 @@ async function addCartProduct(user_id, individual_id) {
     const transaction = await models.sequelize.transaction()
 
     try {
+        console.log('---> Add cart product service', user_id, individual_id)
         //We first check if there is a cart and cartProduct related
         let cart = await CartsServices.findCartByUserId(user_id)
-        let cartProduct = await findCartProductByIndividualId(individual_id)
+        let cartProduct = await findCartProductByIndividualIdUserId(individual_id, user_id)
 
         //If there was no cart, then we create one, otherwise we update it
         if (!cart) cart = await CartsServices.createCart(user_id)
@@ -38,15 +39,16 @@ async function addCartProduct(user_id, individual_id) {
         //Next, we add the cartProdcut to the cart
         cart = await CartsServices.addCartProductToCart(cart.id, individual_id)
 
-        await transaction.commit()
-
         //Finally, before we return the cartProduct we need to recall it to use the model defaultScope
-        cartProduct = await findCartProductByIndividualId(individual_id)
+        cartProduct = await findCartProductByIndividualIdUserId(individual_id, user_id)
+        
+        await transaction.commit()
 
         return {cart, cartProduct}
     } catch (error) {
         await transaction.rollback()
         const err = {
+            location: 'Add cart product service',
             message: error.message,
             error
         }
@@ -60,7 +62,7 @@ async function removeCartProduct(user_id, individual_id) {
 
     try {
         let cart = await CartsServices.findCartByUserId(user_id)
-        const oldCartProduct = await findCartProductByIndividualId(individual_id)
+        const oldCartProduct = await findCartProductByIndividualIdUserId(individual_id, user_id)
         let cartProduct = oldCartProduct
 
         if (!cart || !cartProduct) return null
@@ -107,24 +109,45 @@ async function findCartProductById(id) {
     })
 }
 
-async function findCartProductByIndividualId(individual_id) {
-    return await models.CartProducts.findOne({
-        where: {
-            individual_id
-        }
-    })
+/**
+ * Search a cart product that corresponds both to a user and to a product individual
+ * @param {*} individual_id 
+ * @param {*} user_id 
+ * @returns 
+ */
+async function findCartProductByIndividualIdUserId(individual_id, user_id) {
+    const cart = await CartsServices.findCartByUserId(user_id)
+
+    //To check if the cart product matches the user_id first we search for his cart.
+    if (cart) {
+        return await models.CartProducts.findOne({
+            where: {
+                individual_id,
+                cart_id: cart.id
+            }
+        })
+    }
+    
+    return null
 }
 
-async function findCartProductByProductIdAndQueire(product_id, {color, size, style}) {
+async function findCartProductByProductIdAndQueire(product_id, user_id, {color, size, style}) {
     console.log('---> Searching cart product for:', product_id, {color, size, style})
 
-    const individual = await ProductIndividualsServices.findProductIndividualByProductIdWithQueries(product_id, {color, size, style})
-
-    if (!individual) return null
-
-    const cartProduct = await findCartProductByIndividualId(individual.id)
-
-    return cartProduct
+    try {
+        //If the product individual doesn't exist, then the cart product won't exist either.
+        const individual = await ProductIndividualsServices.findProductIndividualByProductIdWithQueries(product_id, {color, size, style})
+    
+        if (!individual) return null
+    
+        const cartProduct = await findCartProductByIndividualIdUserId(individual.id, user_id)
+    
+        if (cartProduct) return cartProduct
+        return null
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
 }
 
 async function findAllCartProductsByUser(user_id) {
@@ -149,7 +172,7 @@ async function destroyCartProductByIndividualId(user_id , individual_id) {
 
     try {
         let cart = await CartsServices.findCartByUserId(user_id)
-        const oldCartProduct = await findCartProductByIndividualId(individual_id)
+        const oldCartProduct = await findCartProductByIndividualIdUserId(individual_id, user_id)
         let cartProduct = oldCartProduct
 
         await cartProduct.destroy({transaction})
@@ -168,7 +191,7 @@ async function destroyCartProductByIndividualId(user_id , individual_id) {
         await transaction.commit()
         
         cart = await CartsServices.findCartByUserId(user_id)
-        cartProduct = await findCartProductByIndividualId(individual_id)
+        cartProduct = await findCartProductByIndividualIdUserId(individual_id, user_id)
 
         return {
             cart,
@@ -187,8 +210,8 @@ async function destroyCartProductByIndividualId(user_id , individual_id) {
 
 module.exports = {
     findCartProductByProductIdAndQueire,
+    findCartProductByIndividualIdUserId, 
     destroyCartProductByIndividualId,
-    findCartProductByIndividualId,
     findAllCartProductsByUser,
     findCartProductById,
     removeCartProduct,
