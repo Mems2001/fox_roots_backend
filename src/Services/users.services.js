@@ -4,9 +4,9 @@ const { hashPassword } = require('../../utils/bcrypt');
 const RolesServices = require('../Services/roles.services');
 
 /**
- * This function hndles both regular user and anon user creation. Toggles between those function by receiving a role param.
+ * This function handles both regular user and anon user creation. Toggles between those function by receiving a role param.
  * @param {string} role A string that specifies the type of user requested. If undefined, it will be regular user.
- * @param {string} id Uuid like string that is provided only for ANON user requests.
+ * @param {string} id UUID like string that is provided only for ANON user requests.
  * @param {string} username
  * @param {string} email
  * @param {string} phone

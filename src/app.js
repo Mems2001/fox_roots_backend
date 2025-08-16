@@ -19,15 +19,23 @@ const app = express();
 const port = process.env['PORT'] || 8000
 app.use(cookie_parser())
 app.use(bodyParser.json())
-app.use(session({
-  secret: process.env.SESSION_SECRET
-}))
 
 // Cors settings
 app.use(cors({
-  origin: ['http://localhost:4200' , 'https://foxroots593.netlify.app'],
+  origin: ['http://localhost:4200' , 'https://foxroots593.netlify.app', 'http://192.168.1.7:4200'],
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   credentials: true
+}))
+
+//Session settings
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Solo en producción
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Configuración para CORS'       // required for cross-origin cookies
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }))
 
 //Cookies settings

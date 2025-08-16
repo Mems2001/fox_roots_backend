@@ -7,15 +7,27 @@ const RolesServices = require('../Services/roles.services');
 const CartsServices = require('../Services/carts.services')
 
 async function postUser (req, res) {
-    const {username} = req.body
+    const {username, email} = req.body
 
-    let user
+    let userByUsername
+    let userByEmail
 
-    user = await UsersServices.findUserByUsername(username)
+    userByUsername = await UsersServices.findUserByUsername(username)
+    userByEmail = await UsersServices.findUserByEmail(email)
 
-    if (user) {
-        return res.status(409).json({
+    if (userByEmail && userByUsername) {
+         return res.status(409).json({
             message: 'This user already exists'
+        })
+    }
+    if (userByEmail) {
+        return res.status(409).json({
+            message: 'This email has already been used'
+        })
+    }
+    if (userByUsername) {
+        return res.status(409).json({
+            message: 'This username has already been used'
         })
     }
 
@@ -80,7 +92,8 @@ async function login (req, res) {
         res.setCookie('access-token', accesToken)
         // res.cookie('refresh-token' , refreshToken)
         res.status(200).json({
-            message: `User ${user.username} logged in`
+            message: `User ${user.username} logged in`,
+            username: user.username
         })
     } catch (error) {
         console.error(error)
@@ -139,6 +152,7 @@ async function authSession(req, res) {
                         session_authenticated: true,
                         message: "Session authenticated",
                         user_id: user.id,
+                        username: user.username,
                     })
                 }
             } else {
