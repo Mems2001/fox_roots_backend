@@ -116,7 +116,7 @@ module.exports = {
         id: uuid.v4(),
         name: 'test 8',
         description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ad unde quis dolores nemo! Eligendi sunt sed eaque dolore, vel accusantium cumque molestias voluptate aliquam quis, possimus in perspiciatis et.',
-        product_id: getElementId(products, 'buso'),
+        product_id: getElementId(products, 'camiseta'),
         color_id: getElementId(colors, 'red'),
         size_id: getElementId(sizes, 'L'),
         style_id: getElementId(styles, 'plain'),
