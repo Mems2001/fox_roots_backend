@@ -4,7 +4,7 @@ const { hashPassword } = require('../../utils/bcrypt');
 const RolesServices = require('../Services/roles.services');
 
 /**
- * This function handles both regular user and anon user creation. Toggles between those function by receiving a role param.
+ * This function handles both regular user and anon user creation. Toggles between those function by receiving a role param. It also reasign carts from anons to users if needed.
  * @param {string} role A string that specifies the type of user requested. If undefined, it will be regular user.
  * @param {string} id UUID like string that is provided only for ANON user requests.
  * @param {string} username
@@ -48,11 +48,28 @@ async function createUser(role_name, id, {username, email, phone, password}) {
         }
     }
 
+    let profileData = {
+        id: uuid.v4(),
+        user_id: userData.id,
+        username: userData.username
+    }
+
     // console.log('user data: ', role_name, userData)
     const transaction = await models.sequelize.transaction()
 
     try {
         const newUser = await models.Users.create(userData, {transaction})
+        const newProfile = await models.Profiles.create(profileData, {transaction})
+
+        //Cart reassignation
+        if (id) {
+            const cart = await CartsServices.findCartByUserId(id)
+            const anonCart = await CartsServices.findCartByUserId(id)
+            if (!cart && anonCart) {
+                await CartsServices.reassingCartByUserId(id, anonCart.id)
+            }
+        }
+
         await transaction.commit()
         return newUser
     } catch (error) {
@@ -102,7 +119,7 @@ async function findUserByEmailToken(email_verification_token) {
     })
 }
 
-async function updateUserById(id, {username, email, phone}) {
+async function updateUserById(id, {username, email, phone, profile_image, address, lat, long, residence_number, residence_description}) {
     const transaction = await models.sequelize.transaction()
     try {
         const user = await models.Users.findOne({
@@ -114,6 +131,12 @@ async function updateUserById(id, {username, email, phone}) {
         if (!user) {
             return null
         }
+
+        const profile = await models.Profiles.findOne({
+            where: {
+                user_id: user.id
+            }
+        })
 
         //We check if email or phone are going to change, if so, we generate new verification tokens
         let newEmailToken = user.email_verification_token
@@ -130,18 +153,27 @@ async function updateUserById(id, {username, email, phone}) {
         }
 
         const updatedUser = await user.update({
-            username: username? username : user.username,
-            email: email? email : user.email,
+            username: username ?? user.username,
+            email: email ?? user.email,
             email_verified: newEmailVerified,
             email_verification_token: newEmailToken,
-            phone: phone? phone : user.phone,
+            phone: phone ?? user.phone,
             phone_verified: newPhoneVerified,
             phone_verification_token: newPhoneToken
+        }, {transaction})
+        const updatedProfile = await profile.update({
+            username: username ?? user.username,
+            profile_image: profile_image ?? profile.profile_image,
+            address: address ?? profile.address,
+            lat: lat ?? profile.lat,
+            long: long ?? profile.long,
+            residence_number: residence_number ?? profile.residence_number,
+            residence_description: residence_description ?? profile.residence_description
         }, {transaction})
 
         await transaction.commit()
     
-        return updatedUser
+        return {updatedUser, updatedProfile}
     } catch (error) {
         await transaction.rollback()
         console.error('users services:', error)

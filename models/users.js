@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Users.hasOne(models.Profiles, {
+        foreignKey: 'user_id'
+      })
       Users.hasMany(models.Carts, {
         foreignKey: 'user_id'
       })
@@ -24,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Users.init({
+    role_id: DataTypes.UUID,
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -31,8 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     email_verified: DataTypes.BOOLEAN,
     email_verification_token: DataTypes.UUID,
     phone_verified: DataTypes.BOOLEAN,
-    phone_verification_token: DataTypes.UUID,
-    profile_image: DataTypes.STRING
+    phone_verification_token: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Users',

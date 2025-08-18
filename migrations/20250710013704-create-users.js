@@ -76,11 +76,6 @@ module.exports = {
           unique: true,
           field: 'phone_verification_token'
         },
-        profileImage: {
-          type: Sequelize.STRING,
-          allowNull: true,
-          field: 'profile_image'
-        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
@@ -103,6 +98,15 @@ module.exports = {
     }
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    const transaction = await queryInterface.sequelize.transaction()
+
+    try {
+      await queryInterface.dropTable('users', {transaction})
+
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
   }
 };

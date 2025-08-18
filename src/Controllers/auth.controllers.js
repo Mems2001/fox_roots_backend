@@ -6,8 +6,13 @@ const UsersServices = require('../Services/users.services');
 const RolesServices = require('../Services/roles.services');
 const CartsServices = require('../Services/carts.services')
 
+/**
+ * Creates both the user and its corresponding profile but send back only the user data
+ * @returns The created user
+ */
 async function postUser (req, res) {
     const {username, email} = req.body
+    const cookie = req.cookies['access-token']
 
     let userByUsername
     let userByEmail
@@ -31,7 +36,13 @@ async function postUser (req, res) {
         })
     }
 
-    UsersServices.createUser(undefined, undefined, req.body)
+    // For cart reasigning
+    let anon_user
+    if (cookie) {
+        anon_user = verify(cookie, process.env.JWT_SECRET)    
+    }
+
+    UsersServices.createUser(undefined, anon_user.user_id ?? undefined, req.body)
         .then(data => {
             res.status(201).json(data)
         })
@@ -200,15 +211,6 @@ async function postAnon(req, res) {
                 err
             })
         })
-
-    // const token = await generateJWT(id, '1d')
-
-    // res.setCookie('access-token', token)
-    // res.status(201).json({
-    //     session_authenticated: false,
-    //     message: 'Anon user created',
-    //     user_id: id
-    // })
 }
 
 function sendEmailVerificationToken (req, res) {

@@ -31,10 +31,19 @@ module.exports = {
       }
     ]
 
+    const profiles = [
+      {
+        id: uuid.v4(),
+        user_id: users[0].id,
+        username: users[0].username
+      }
+    ]
+
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
       await queryInterface.bulkInsert('users', users, {transaction})
+      await queryInterface.bulkInsert('profiles', profiles, {transaction})
 
       await transaction.commit()
     } catch (error) {
@@ -60,7 +69,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
 
     try {
-      await queryInterface.bulkDelete('users', {
+       await queryInterface.bulkDelete('users', {
         where: {
           id: {
             [Op.ne] : ''
