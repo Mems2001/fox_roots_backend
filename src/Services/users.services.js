@@ -1,7 +1,8 @@
-const uuid = require('uuid');
-const models = require('../../models');
-const { hashPassword } = require('../../utils/bcrypt');
-const RolesServices = require('../Services/roles.services');
+const uuid = require('uuid')
+const models = require('../../models')
+const { hashPassword } = require('../../utils/bcrypt')
+const RolesServices = require('../Services/roles.services')
+const CartsServices = require('../Services/carts.services')
 
 /**
  * This function handles both regular user and anon user creation. Toggles between those function by receiving a role param. It also reasign carts from anons to users if needed.
@@ -173,7 +174,19 @@ async function updateUserById(id, {username, email, phone, profile_image, addres
 
         await transaction.commit()
     
-        return {updatedUser, updatedProfile}
+        return {
+            User: updatedUser,
+            id: updatedProfile.id,
+            username: updatedProfile.username,
+            profile_image: updatedProfile.profile_image,
+            address: updatedProfile.address,
+            lat: updatedProfile.lat,
+            long: updatedProfile.long,
+            residence_number: updatedProfile.residence_number,
+            residence_description: updatedProfile.residence_description,
+            created_at: updatedProfile.created_at,
+            updated_at: updatedProfile.updated_at
+        }
     } catch (error) {
         await transaction.rollback()
         console.error('users services:', error)

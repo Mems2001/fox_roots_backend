@@ -15,6 +15,18 @@ module.exports = (sequelize, DataTypes) => {
         as: 'User',
         foreignKey: 'user_id'
       })
+
+      Profiles.addScope('defaultScope', {
+        include: [
+          {
+            model: sequelize.models.Users,
+            as: 'User',
+            attributes: {
+              exclude: ['password', 'email_verification_token', 'phone_verification_token', 'role_id']
+            }
+          }
+        ]
+      })
     }
   }
   Profiles.init({
