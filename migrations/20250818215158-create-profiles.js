@@ -44,7 +44,7 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: true
         },
-        long: {
+        lng: {
           type: Sequelize.STRING,
           allowNull: true
         },

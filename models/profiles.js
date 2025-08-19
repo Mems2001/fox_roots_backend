@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     profile_image: DataTypes.TEXT,
     address: DataTypes.STRING,
     lat: DataTypes.STRING,
-    long: DataTypes.STRING,
+    lng: DataTypes.STRING,
     residence_number: DataTypes.STRING,
     residence_description: DataTypes.STRING 
   }, {
