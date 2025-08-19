@@ -50,7 +50,8 @@ async function addCartProduct(user_id, individual_id) {
         const err = {
             location: 'Add cart product service',
             message: error.message,
-            error
+            error,
+            individual_id
         }
         console.error(err)
         throw err
