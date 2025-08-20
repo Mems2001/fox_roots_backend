@@ -1,10 +1,10 @@
 const { verify } = require('jsonwebtoken');
-const { comparePasswords } = require('../../utils/bcrypt');
-const { generateJWT } = require('../../utils/generate-jwt');
-const AuthServices = require('../Services/auth.services');
-const UsersServices = require('../Services/users.services');
-const RolesServices = require('../Services/roles.services');
+const { comparePasswords } = require('../../utils/bcrypt')
+const { generateJWT } = require('../../utils/generate-jwt')
+const UsersServices = require('../Services/users.services')
+const RolesServices = require('../Services/roles.services')
 const CartsServices = require('../Services/carts.services')
+const UserTokensServices = require('../Services/userTokens.services')
 
 /**
  * Creates both the user and its corresponding profile but send back only the user data
@@ -217,10 +217,10 @@ function sendEmailVerificationToken (req, res) {
     const user_id = req.session.user.user_id
     console.log('---> Sending email verification token for user:', user_id)
 
-    AuthServices.sendEmailVerificationToken(user_id)
+    UserTokensServices.sendEmailVerificationToken(user_id, req.body.type)
         .then(data => {
             if (data) res.status(200).json(data)
-            else res.status(400).json(data)
+            else res.status(404).json(data)
         })
         .catch(err => {
             console.error(err)
@@ -232,23 +232,25 @@ function sendEmailVerificationToken (req, res) {
 }
 
 function getVerifyEmail(req, res) {
+    const user_id = req.params.user_id
     const token = req.params.token
+    const url = process.env.NODE_ENV === 'development'? 'http://localhost:4200' : 'https://foxroots593.netlify.app'
 
-    AuthServices.verifyEmail(token)
+    UserTokensServices.verifyEmail(user_id, token, 1)
         .then(data => {
             if (data) {
-                res.redirect('https://foxroots593.netlify.app/me')
+                res.redirect(`${url}/me`)
                 // res.status(200).json(data)
             }
             else {
-                res.redirect('https://foxroots593.netlify.app/')
+                res.redirect(`${url}/`)
                 // res.status(400).json(data)
             }
         })
         .catch(err => {
             console.error(err)
             res.status(500).json({
-                location: 'auth controllers',
+                location: 'get verifiy email auth controller',
                 message: err.message,
                 err
             })

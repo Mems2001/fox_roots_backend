@@ -58,23 +58,11 @@ module.exports = {
           defaultValue: false,
           field: 'email_verified'
         },
-        emailVerificationToken: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          unique: true,
-          field: 'email_verification_token'
-        },
         phoneVerified: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
           defaultValue: false,
           field: 'phone_verified'
-        },
-        phoneVerificationToken: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          unique: true,
-          field: 'phone_verification_token'
         },
         createdAt: {
           allowNull: false,

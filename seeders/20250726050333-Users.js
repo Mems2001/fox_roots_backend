@@ -25,9 +25,7 @@ module.exports = {
         role_id: admin.id,
         username: 'mems2001',
         password: hashPassword('1234'),
-        email: 'mems2001code@gmail.com',
-        email_verification_token: uuid.v4(),
-        phone_verification_token: uuid.v4()
+        email: 'mems2001code@gmail.com'
       }
     ]
 

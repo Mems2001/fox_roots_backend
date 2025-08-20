@@ -1,24 +1,11 @@
 const uuid = require('uuid');
 
 const models = require('../../models')
-const { sendEmail } = require('../../utils/mailer');
 const UsersServices = require('./users.services');
-
-async function sendEmailVerificationToken(id) {
-    const user = await UsersServices.findUserById(id)
-
-    if (!user) {
-        return false
-    }
-
-    await sendEmail(user.email, user.email_verification_token).catch(err => console.error(err))
-
-    return true
-}
 
 /**
  * This function verifies the email by first checking the token authenticity, and then simply updates the email_verify field in the user table and creates a new token in case of new email verifycation needed.
- * @param {string} token A uuid like string
+ * @param {uuid} token A uuid like string
  * @returns 
  */
 async function verifyEmail(token) {
@@ -49,6 +36,5 @@ async function verifyEmail(token) {
 }
 
 module.exports = {
-    sendEmailVerificationToken,
     verifyEmail
 }

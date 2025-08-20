@@ -30,8 +30,27 @@ async function sendTestEmail(receiverEmail) {
   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 }
 
-async function sendEmail(receiverEmail, token){
-     // Set up transporter using Gmail
+/**
+ * Sends an email with a verification link.
+ * @param {*} receiverEmail The email address where to send the email.
+ * @param {*} token A token for verification.
+ * @param {*} user_id  UUID like string for user id.
+ * @param {integer} type The type of verification requested being: 0 -> password reset, 1-> email verification, 2 -> phone verification.
+ */
+async function sendEmail(receiverEmail, token, user_id, type){
+  let typeAlt
+  switch (type) {
+    case 0:
+      typeAlt = ''
+      break
+    case 1: 
+      typeAlt = 'verify-email'
+      break
+    case 2:
+      typeAlt = ''
+  }
+
+  // Set up transporter using Gmail
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -109,7 +128,7 @@ async function sendEmail(receiverEmail, token){
         Gracias por unirte a <span class="highlight">Fox Roots</span>.<br />
         Para completar tu registro, haz clic en el botón a continuación.
       </p>
-      <a href='https://fox-roots-backend-exq8.onrender.com/api/v1/auth/verify-email/${token}' class="btn">Verificar cuenta</a>
+      <a href='${process.env.NODE_ENV === 'development'? 'http://localhost:8000' : 'https://fox-roots-backend-exq8.onrender.com'}/api/v1/auth/${typeAlt}/${token}/${user_id}' class="btn">Verificar cuenta</a>
       <p class="footer">
         Si no solicitaste esta verificación, puedes ignorar este correo o
         <a href='http://localhost:4200' class="link">contactar soporte</a>.

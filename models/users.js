@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Favorites, {
         foreignKey: 'user_id'
       })
+      Users.hasMany(models.UserTokens, {
+        foreignKey: 'user_id'
+      })
       Users.belongsTo(models.Roles, {
         foreignKey: 'role_id',
         as: 'Role'
@@ -33,22 +36,20 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     password: DataTypes.STRING,
     email_verified: DataTypes.BOOLEAN,
-    email_verification_token: DataTypes.UUID,
-    phone_verified: DataTypes.BOOLEAN,
-    phone_verification_token: DataTypes.UUID
+    phone_verified: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Users',
     tableName: 'users',
     defaultScope: {
       attributes: {
-        exclude: ['password', 'email_verification_token', 'phone_verification_token']
+        exclude: ['password']
       }
     },
     scopes:{
       withSensitiveData: {
         attributes: {
-          include: ['password', 'email_verification_token', 'phone_verification_token']
+          include: ['password']
         }
       }
     }
