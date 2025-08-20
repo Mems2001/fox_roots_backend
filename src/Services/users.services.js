@@ -120,7 +120,7 @@ async function findUserByEmailToken(email_verification_token) {
     })
 }
 
-async function updateUserById(id, {username, email, phone, profile_image, address, lat, long, residence_number, residence_description}) {
+async function updateUserById(id, {username, email, phone, profile_image, address, lat, lng, residence_number, residence_description}) {
     const transaction = await models.sequelize.transaction()
     try {
         const user = await models.Users.findOne({
@@ -167,7 +167,7 @@ async function updateUserById(id, {username, email, phone, profile_image, addres
             profile_image: profile_image ?? profile.profile_image,
             address: address ?? profile.address,
             lat: lat ?? profile.lat,
-            long: long ?? profile.long,
+            lng: lng ?? profile.lng,
             residence_number: residence_number ?? profile.residence_number,
             residence_description: residence_description ?? profile.residence_description
         }, {transaction})
