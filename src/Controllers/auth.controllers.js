@@ -213,50 +213,6 @@ async function postAnon(req, res) {
         })
 }
 
-function sendEmailVerificationToken (req, res) {
-    const user_id = req.session.user.user_id
-    console.log('---> Sending email verification token for user:', user_id)
-
-    UserTokensServices.sendEmailVerificationToken(user_id, req.body.type)
-        .then(data => {
-            if (data) res.status(200).json(data)
-            else res.status(404).json(data)
-        })
-        .catch(err => {
-            console.error(err)
-            res.status(500).json({
-                message: 'Error sending email verification token',
-                err
-            })
-        })
-}
-
-function getVerifyEmail(req, res) {
-    const user_id = req.params.user_id
-    const token = req.params.token
-    const url = process.env.NODE_ENV === 'development'? 'http://localhost:4200' : 'https://foxroots593.netlify.app'
-
-    UserTokensServices.verifyEmail(user_id, token, 1)
-        .then(data => {
-            if (data) {
-                res.redirect(`${url}/me`)
-                // res.status(200).json(data)
-            }
-            else {
-                res.redirect(`${url}/`)
-                // res.status(400).json(data)
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            res.status(500).json({
-                location: 'get verifiy email auth controller',
-                message: err.message,
-                err
-            })
-        })
-}
-
 function deleteMyUser (req, res) {
     const user_id = req.session.user.user_id
     console.log('---> Deleting user:', user_id)
@@ -279,6 +235,104 @@ function deleteMyUser (req, res) {
         })
 }
 
+// ---> Token Verification
+function sendEmailVerificationToken (req, res) {
+    const user_id = req.session.user.user_id
+    console.log('---> Sending email verification token for user:', user_id)
+
+    UserTokensServices.sendVerificationToken(user_id, req.body.type)
+        .then(data => {
+            if (data) res.status(200).json(data)
+            else res.status(404).json(data)
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                message: 'Error sending email verification token',
+                err
+            })
+        })
+}
+
+function getVerifyEmail(req, res) {
+    const user_id = req.params.user_id
+    const token = req.params.token
+    const url = process.env.NODE_ENV === 'development'? 'http://localhost:4200' : 'https://foxroots593.netlify.app'
+
+    UserTokensServices.verifyToken(user_id, token, 1)
+        .then(data => {
+            if (data) {
+                res.redirect(`${url}/me`)
+                // res.status(200).json(data)
+            }
+            else {
+                res.redirect(`${url}/`)
+                // res.status(400).json(data)
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                location: 'get verifiy email auth controller',
+                message: err.message,
+                err
+            })
+        })
+}
+
+function sendPasswordResetToken(req, res) {
+    const user_id = req.session.user.user_id
+
+    UserTokensServices.sendVerificationToken(user_id, req.body.type)    
+        .then(data => {
+            if (data) res.status(200).json(data)
+            else res.status(400).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({
+                location: 'send password reset token controller',
+                message: err.message,
+                err
+            })
+        })
+}
+
+function redirectToPasswordResetPage(req, res) {
+    const user_id = req.params.user_id
+    const token = req.params.token
+    const url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200' : 'https://foxroots593.netlify.app'
+
+    res.redirect(`${url}/security/password-reset/${token}/${user_id}`)
+}
+
+/**
+ * First verifies the provided token, if valid it changes the password. 
+ * @returns Returns back a boolean to the client, true if password changing was successful and false otherwise. If true, it also logs out the user.
+ */
+function postPasswordReset(req, res) {
+    const user_id = req.params.user_id
+    const token = req.params.token
+    const url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200' : 'https://foxroots593.netlify.app'
+
+    UserTokensServices.changePassword(user_id, token, 0, req.body.password)
+        .then(data => {
+            if (data) {
+                req.session.user = null
+                res.delCookie('access-token')
+                res.status(200).json(data)
+            }
+            else res.status(400).json(data)
+        })
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({
+                location: 'post password reset auth controller',
+                message: err.message,
+                err
+            })
+        })
+}
+
 module.exports = {
     login,
     logout,
@@ -287,5 +341,8 @@ module.exports = {
     authSession,
     deleteMyUser,
     getVerifyEmail,
-    sendEmailVerificationToken
+    postPasswordReset,
+    sendPasswordResetToken,
+    sendEmailVerificationToken,
+    redirectToPasswordResetPage,
 }
